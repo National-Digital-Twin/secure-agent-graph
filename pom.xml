@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ SPDX-License-Identifier: Apache-2.0
+ Originally developed by Telicent Ltd.; subsequently adapted, enhanced, and maintained by the National Digital Twin Programme.
+
+    Copyright (c) Telicent Ltd.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+
+    Modifications made by the National Digital Twin Programme (NDTP)
+    © Crown Copyright 2025. This work has been developed by the National Digital Twin Programme
+    and is legally attributed to the Department for Business and Trade (UK) as the governing entity.
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>uk.gov.dbt.ndtp.secure-agent.graph</groupId>
+  <artifactId>sag-base</artifactId>
+  <packaging>pom</packaging>
+  <version>0.90.0</version>
+
+  <name>IANode Secure Agent Graph - Parent</name>
+  <description>IANode Secure Agent Graph</description>
+  <url>https://github.com/National-Digital-Twin/secure-agent-graph</url>
+
+  <scm>
+    <connection>scm:git:git@github.com:National-Digital-Twin/secure-agent-graph</connection>
+    <developerConnection>scm:git:git@github.com:National-Digital-Twin/secure-agent-graph</developerConnection>
+    <url>https://github.com/National-Digital-Twin/secure-agent-graph</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <licenses>
+    <license>
+      <name>Apache-2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>IANode Developers</name>
+      <email>NDTP@businessandtrade.gov.uk</email>
+      <organization>Department for Business and Trade</organization>
+      <organizationUrl>https://ndtp.co.uk</organizationUrl>
+    </developer>
+  </developers>
+
+  <properties>
+    <!-- Build properties -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.build.outputTimestamp>2024-12-23T08:58:20Z</project.build.outputTimestamp>
+    <java.version>21</java.version>
+
+    <!-- Maven Plugin versions -->
+    <plugin.clean>3.3.2</plugin.clean>
+    <plugin.compiler>3.13.0</plugin.compiler>
+    <plugin.cyclonedx>2.9.1</plugin.cyclonedx>
+    <plugin.dependency>3.8.1</plugin.dependency>
+    <plugin.deploy>3.1.3</plugin.deploy>
+    <plugin.enforcer>3.4.1</plugin.enforcer>
+    <plugin.gpg>3.2.7</plugin.gpg>
+    <plugin.install>3.1.1</plugin.install>
+    <plugin.jar>3.4.2</plugin.jar>
+    <plugin.jacoco>0.8.12</plugin.jacoco>
+    <plugin.javadoc>3.11.2</plugin.javadoc>
+    <plugin.owasp-dependency-check>11.1.1</plugin.owasp-dependency-check>
+    <plugin.resources>3.3.1</plugin.resources>
+    <plugin.shade>3.4.1</plugin.shade>
+    <plugin.site>3.9.1</plugin.site>
+    <plugin.source>3.3.1</plugin.source>
+    <plugin.surefire>3.5.2</plugin.surefire>
+    <plugin.versions>2.18.0</plugin.versions>
+
+    <!-- Dependency versions -->
+    <!-- Internal dependencies -->
+    <dependency.rdf-abac>0.90.0</dependency.rdf-abac>
+    <dependency.fuseki-kafka>0.90.0</dependency.fuseki-kafka>
+    <dependency.jena>5.2.0</dependency.jena>
+    <dependency.fuseki-server>${dependency.jena}</dependency.fuseki-server>
+    <dependency.graphql>0.90.0</dependency.graphql>
+    <dependency.jwt-servlet-auth>0.90.0</dependency.jwt-servlet-auth>
+    <dependency.secure-agents-lib>0.90.0</dependency.secure-agents-lib>
+
+    <!-- External dependencies -->
+    <dependency.kotlin>2.1.0</dependency.kotlin>
+    <dependency.otel>1.33.0</dependency.otel> <!-- These two must be in-step. -->
+    <dependency.otel-semconv>1.30.1-alpha</dependency.otel-semconv> <!-- These two must be in-step. -->
+
+    <!-- Logging dependencies -->
+    <dependency.log4j2>2.24.3</dependency.log4j2>
+    <dependency.logback>1.5.16</dependency.logback>
+    <dependency.slf4j>2.0.13</dependency.slf4j>
+
+    <!-- Test dependencies -->
+    <dependency.junit5>5.11.4</dependency.junit5>
+    <dependency.junit5-platform>1.11.4</dependency.junit5-platform>
+    <dependency.mockito>5.15.2</dependency.mockito>
+    <dependency.testcontainers>1.20.4</dependency.testcontainers>
+
+    <dependency.yaml-config>0.90.0</dependency.yaml-config>
+
+  </properties>
+
+  <modules>
+    <module>sag-system</module>
+    <module>sag-server</module>
+    <module>sag-docker</module>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+
+      <!-- Internal dependencies-->
+      <dependency>
+        <groupId>org.apache.jena</groupId>
+        <artifactId>jena-fuseki-main</artifactId>
+        <version>${dependency.jena}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite-engine</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <!-- Complete Fuseki Main server as a single jar -->
+      <dependency>
+        <groupId>org.apache.jena</groupId>
+        <artifactId>jena-fuseki-server</artifactId>
+        <version>${dependency.jena}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.jena</groupId>
+        <artifactId>jena-fuseki-webapp</artifactId>
+        <version>${dependency.jena}</version>
+      </dependency>
+      <!-- Fuseki-Kafka connector -->
+      <dependency>
+        <groupId>uk.gov.dbt.ndtp.jena</groupId>
+        <artifactId>jena-fuseki-kafka-module</artifactId>
+        <version>${dependency.fuseki-kafka}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <!-- ABAC engine -->
+      <dependency>
+        <!-- Used in sag-system -->
+        <groupId>uk.gov.dbt.ndtp.jena</groupId>
+        <artifactId>rdf-abac-fuseki</artifactId>
+        <version>${dependency.rdf-abac}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>uk.gov.dbt.ndtp.jena</groupId>
+        <artifactId>rdf-abac-fmod</artifactId>
+        <version>${dependency.rdf-abac}</version>
+      </dependency>
+
+      <!-- Authentication -->
+      <dependency>
+        <groupId>uk.gov.dbt.ndtp.public</groupId>
+        <artifactId>jwt-servlet-auth-aws</artifactId>
+        <version>${dependency.jwt-servlet-auth}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>uk.gov.dbt.ndtp.public</groupId>
+        <artifactId>jwt-servlet-auth-servlet5</artifactId>
+        <version>${dependency.jwt-servlet-auth}</version>
+      </dependency>
+      <dependency>
+        <groupId>uk.gov.dbt.ndtp.secure-agents</groupId>
+        <artifactId>jwt-auth-common</artifactId>
+        <version>${dependency.secure-agents-lib}</version>
+      </dependency>
+
+      <!-- GraphQL -->
+      <dependency>
+        <groupId>uk.gov.dbt.ndtp.jena.graphql</groupId>
+        <artifactId>graphql-fuseki-module</artifactId>
+        <version>${dependency.graphql}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>uk.gov.dbt.ndtp.jena.graphql</groupId>
+        <artifactId>ianode-graph-schema</artifactId>
+        <version>${dependency.graphql}</version>
+      </dependency>
+
+      <!-- External Dependencies -->
+
+      <!-- Logging dependencies -->
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${dependency.logback}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>${dependency.log4j2}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>${dependency.log4j2}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-slf4j2-impl</artifactId>
+        <version>${dependency.log4j2}</version>
+        <scope>test</scope>
+        <exclusions>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <!-- Open Telemetry -->
+      <dependency>
+        <groupId>io.opentelemetry</groupId>
+        <artifactId>opentelemetry-bom</artifactId>
+        <version>${dependency.otel}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.opentelemetry.javaagent</groupId>
+        <artifactId>opentelemetry-javaagent</artifactId>
+        <scope>runtime</scope>
+        <version>${dependency.otel}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.opentelemetry</groupId>
+        <artifactId>opentelemetry-sdk-testing</artifactId>
+        <version>${dependency.otel}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.opentelemetry</groupId>
+        <artifactId>opentelemetry-semconv</artifactId>
+        <version>${dependency.otel-semconv}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib</artifactId>
+        <version>${dependency.kotlin}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-common</artifactId>
+        <version>${dependency.kotlin}</version>
+      </dependency>
+
+      <!-- Testing dependencies -->
+      <!-- JUnit 5 -->
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>${dependency.junit5}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>${dependency.junit5}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.platform</groupId>
+        <artifactId>junit-platform-suite</artifactId>
+        <version>${dependency.junit5-platform}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${dependency.mockito}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-junit-jupiter</artifactId>
+        <version>${dependency.mockito}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>kafka</artifactId>
+        <version>${dependency.testcontainers}</version>
+        <scope>test</scope>
+        <exclusions>
+          <exclusion>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>uk.gov.dbt.ndtp.public</groupId>
+        <artifactId>fuseki-yaml-config</artifactId>
+        <version>${dependency.yaml-config}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${plugin.compiler}</version>
+          <configuration>
+            <release>${java.version}</release>
+            <compilerArgument>-proc:none</compilerArgument>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>${plugin.dependency}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${plugin.deploy}</version>
+          <configuration>
+            <repositoryId>github</repositoryId>
+            <url>https://maven.pkg.github.com/National-Digital-Twin/secure-agent-graph</url>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${plugin.jar}</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              </manifest>
+            </archive>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>test-jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${plugin.javadoc}</version>
+          <configuration>
+            <doclint>none</doclint>
+          </configuration>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${plugin.resources}</version>
+          <configuration>
+            <encoding>UTF-8</encoding>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>3.6.0</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${plugin.source}</version>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <goals>
+                <goal>jar-no-fork</goal>
+              </goals>
+              <phase>package</phase>
+              <configuration>
+                <classifier>sources</classifier>
+              </configuration>
+            </execution>
+            <execution>
+              <id>attach-sources-test</id>
+              <goals>
+                <goal>test-jar-no-fork</goal>
+              </goals>
+              <phase>package</phase>
+              <configuration>
+                <classifier>test-sources</classifier>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${plugin.surefire}</version>
+          <configuration>
+            <argLine>@{jacocoArgLine} -XX:+EnableDynamicAgentLoading</argLine>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>${plugin.versions}</version>
+          <configuration>
+            <ignoredVersions>.*[-\.]M.*,.*-alpha.*,.*-beta.*,.*-RC.*,.*rc.*</ignoredVersions>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.cyclonedx</groupId>
+          <artifactId>cyclonedx-maven-plugin</artifactId>
+          <version>${plugin.cyclonedx}</version>
+          <executions>
+            <execution>
+              <id>build-sbom-cyclonedx</id>
+              <phase>package</phase>
+              <goals>
+                <goal>makeAggregateBom</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <outputName>${project.artifactId}-${project.version}-bom</outputName>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.owasp</groupId>
+          <artifactId>dependency-check-maven</artifactId>
+          <version>${plugin.owasp-dependency-check}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>${plugin.gpg}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+            <phase>verify</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.cyclonedx</groupId>
+        <artifactId>cyclonedx-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${plugin.jacoco}</version>
+        <configuration>
+          <propertyName>jacocoArgLine</propertyName>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <repositories>
+    <repository>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/National-Digital-Twin/*</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/National-Digital-Twin/secure-agent-graph</url>
+    </snapshotRepository>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/National-Digital-Twin/secure-agent-graph</url>
+    </repository>
+  </distributionManagement>
+
+</project>

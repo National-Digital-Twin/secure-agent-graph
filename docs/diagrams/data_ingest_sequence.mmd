@@ -1,0 +1,30 @@
+%%  SPDX-License-Identifier: OGL-UK-3.0 %%
+sequenceDiagram
+    autonumber
+    box IA Node Platform
+        participant D as Data Pipeline
+        participant K as Knowledge
+    end
+
+    box Secure Agent Graph
+        participant J as Jena Fuseki Module
+        participant I as Jena TDB
+        participant L as Label Store
+    end
+
+    D->>K: Produces Events
+
+    loop Continuously
+        activate J
+        J->>+K: Polls for Knowledge Events
+        K->>-J: Returns Knowledge Events
+        par RDF Triple Processing
+            J->>J: Extract RDF
+            J->>+I: Insert into Triple Store
+        and Security Label Processing
+            J->>J: Extract Security Label
+            J->>+L: Insert into Label Store
+        end
+        I->>-J: Returns Status
+        deactivate J
+    end
