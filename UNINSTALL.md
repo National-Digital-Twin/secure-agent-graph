@@ -1,6 +1,5 @@
 # Uninstall
-**Repository:** `secure-agent-graph`  
-
+**Repository:** `secure-agent-graph`    
 **Description:** `This file provides detailed steps to remove this repository, including any dependencies and configurations for Secure Agent Graph.`  
 
 <!-- SPDX-License-Identifier: OGL-UK-3.0 -->

@@ -1,6 +1,6 @@
 # NOTICE
 
-**Repository:** `secure-agent-graph`  
+**Repository:** `secure-agent-graph`    
 **Description:** `Attribution and legal notices related to the use of this repository, including acknowledgments of external contributions.`  
 <!-- SPDX-License-Identifier: OGL-UK-3.0 -->
 
@@ -10,7 +10,8 @@ by Telicent.
 This product is now maintained and further developed as Secure Agent Graph
 by the National Digital Twin Programme.
 
-© 2018-2024 Telicent Ltd.  
+Copyright (c) 2024 Telicent Ltd.
+
 © Crown Copyright 2025. This work has been developed by the National Digital Twin Programme and is legally attributed to the Department for Business and Trade (UK) as the governing entity.
 
 ## License
