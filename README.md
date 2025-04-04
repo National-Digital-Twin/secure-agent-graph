@@ -1,7 +1,6 @@
 # README  
 
 **Repository:** `secure-agent-graph`  
-
 **Description:** `This repository provides the libraries and mechanism for receiving and holding RDF (Resource Description Framework) data. It also provides SPARQL access and integration points such as with ABAC components for security and control over data access.` 
 
 <!-- SPDX-License-Identifier: Apache-2.0 AND OGL-UK-3.0 -->
@@ -11,7 +10,7 @@ This repository contributes to the development of **secure, scalable, and intero
 
 This repository is one of several open-source components that underpin NDTP’s **Integration Architecture (IA)**—a framework designed to allow organisations to manage and exchange data securely while maintaining control over their own information. The IA is actively deployed and tested across multiple sectors, ensuring its adaptability and alignment with real-world needs. 
 
-For a complete overview of the Integration Architecture (IA) project, please see the [Integration Architecture Documentation](https://github.com/National-Digital-Twin/integration-architecture-documentation)
+For a complete overview of the Integration Architecture (IA) project, please see the [Integration Architecture Documentation](https://github.com/National-Digital-Twin/integration-architecture-documentation).
 
 ## Prerequisites  
 Before using this repository, ensure you have the following dependencies installed:  
@@ -48,20 +47,20 @@ Refer to [INSTALLATION.md](INSTALLATION.md) for detailed installation steps, inc
 For steps to remove this repository and its dependencies, see [UNINSTALL.md](UNINSTALL.md).  
 
 ## Features  
-- **Core functionality** 
-    - Supports secure and RDF (Resource Description Framework) data-sharing
-    - Implements [ABAC (Attribute-Based Access Control)](https://github.com/National-Digital-Twin/rdf-abac/blob/main/docs/abac.md) data security
+- **Key functionality** 
+    - Supports secure and RDF (Resource Description Framework) data-sharing.
+    - Implements [ABAC (Attribute-Based Access Control)](https://github.com/National-Digital-Twin/rdf-abac/blob/main/docs/abac.md) data security.
 - **Key integrations** 
-    - Provides SPARQL access using the SPARQL protocol and SPARQL Graph Store Protocol
-    - Integrates with Apache Jena Fuseki server
-    - Includes Fuseki-Kafka bridge for Kafka integration
-    - Offers [GraphQL]((https://github.com/National-Digital-Twin/graphql-jena/blob/main/docs/index.md)) API interfaces
+    - Provides SPARQL access using the SPARQL protocol and SPARQL Graph Store Protocol.
+    - Integrates with Apache Jena Fuseki server.
+    - Includes Fuseki-Kafka bridge for Kafka integration.
+    - Offers [GraphQL]((https://github.com/National-Digital-Twin/graphql-jena/blob/main/docs/index.md)) API interfaces.
 - **Scalability & performance** 
-    - Optimised for high-throughput environments
-    - Supports in-memory datasets for fast data access
+    - Optimised for high-throughput environments.
+    - Supports in-memory datasets for fast data access.
 - **Modularity** 
-    - Designed with a plugin-based architecture for extensibility
-    - Configurable using Fuseki configuration files and environment variables 
+    - Designed with a plugin-based architecture for extensibility.
+    - Configurable using Fuseki configuration files and environment variables.
 
 ## API Documentation  
 Documentation detailing the relevant configuration and endpoints is provided [here](docs/configuration-secure-agent-graph.md ). 
