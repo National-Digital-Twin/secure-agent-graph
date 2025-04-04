@@ -1,0 +1,138 @@
+#!/usr/bin/env bash
+## SPDX-License-Identifier: Apache-2.0
+## Originally developed by Telicent Ltd.; subsequently adapted, enhanced, and maintained by the National Digital Twin Programme.
+  ##
+  ##  Copyright (c) Telicent Ltd.
+  ##
+  ##  Licensed under the Apache License, Version 2.0 (the "License");
+  ##  you may not use this file except in compliance with the License.
+  ##  You may obtain a copy of the License at
+  ##
+  ##      http://www.apache.org/licenses/LICENSE-2.0
+  ##
+  ##  Unless required by applicable law or agreed to in writing, software
+  ##  distributed under the License is distributed on an "AS IS" BASIS,
+  ##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ##  See the License for the specific language governing permissions and
+  ##  limitations under the License.
+  ##
+  ##
+  ##  Modifications made by the National Digital Twin Programme (NDTP)
+  ##  © Crown Copyright 2025. This work has been developed by the National Digital Twin Programme
+  ##  and is legally attributed to the Department for Business and Trade (UK) as the governing entity.
+
+
+## Run the secure-agent-graph container locally.
+## This needs a pass the Fuseki main command line into the container.
+## e.g.
+##   d-run --mem /ds
+##   d-run --conf config/config-replay-plain.ttl
+##
+## config/ is locally mnt/config/ and mapped to /fuseki/config/ in the container.
+## ./fuseki is the container's working directory.
+
+## Version to build
+## Set in pom.xml
+## Beware that this is not the version of the development pom.xml parent
+## which is likely a SNAPSHOT for the next release after a SAG jar release.
+
+## Make sure pom.xml in this directory is the release version intended.
+## Set this via choosing the parent
+CONTAINER_VERSION=$(mvn -q -f pom.xml -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+
+## Version of the Secure Agent Graph java code.
+SAG_VER="$CONTAINER_VERSION"
+
+BASENAME=secure-agent-graph
+
+## Also in docker-compose
+IMAGE_NAME="${BASENAME}"
+
+## Run locally
+CIDFILE="$BASENAME.cid"
+PROC_NAME=FusekiKafka
+
+# External port.
+PORT=3030
+
+echo "Settings:"
+echo "  CONTAINER_VERSION=$CONTAINER_VERSION"
+echo "  SAG_VER=$SAG_VER"
+
+echo "== Docker run $IMAGE_NAME"
+
+if [[ $# == 0 ]]
+then
+    echo "No arguments for the Fuseki server" 1>&2
+    exit 1
+fi
+
+## Clean previous
+##rm -rf mnt/databases/*
+
+# Map the the $MNT area
+MNT=$PWD/mnt
+
+## Or use --cidfile=$CIDFILE
+
+# -i : stdin
+# -d: detached ... > $CIDFILE
+
+## $CIDFILE acts as a lock file.
+##rm $CIDFILE
+
+## Better to test ourselves.
+if [ -n "$CID" ] && [ -e "$CIDFILE" ]
+then
+    echo "Container PID file exists: $CIDFILE" 2>&1
+    exit 2
+fi
+
+if [ ! -e mnt/databases ]
+then
+    ## Database state files from container.
+    mkdir mnt/databases
+    chmod a+rwx mnt/databases
+fi
+
+if [ ! -e mnt/logs ]
+then
+    ## Database state files from container.
+    mkdir mnt/logs
+    chmod a+rwx mnt/logs
+fi
+
+PORT="${PORT:-3030}"
+## --net=host is a development convenience to work with a local kafka instance.
+## NETWORK="--net=host"
+
+NETWORK="-p $PORT:3030"
+
+## ADDITIONAL="--env USER_ATTRIBUTES_URL=$(USER_ATTRIBUTES_URL:http://localhost:9119/users/lookup/{user})"
+
+## SAG_AUTH - Authentication setting JWKS_URL
+echo "==== Docker run"
+
+IMAGE="${IMAGE_NAME}:latest"
+
+## Docker container memory
+## Need to also set the docker run time environment.
+DOCKER_MEM="--memory 24G"
+DOCKER_RUN_OPTIONS="${DOCKER_RUN_OPTIONS} --env JAVA_OPTIONS=-Xmx16G --env JWKS_URL=disabled"
+
+##--env ENV_JWKS_URL=disabled"
+docker run $NETWORK $DOCKER_MEM -t --rm $CID --name $PROC_NAME-$$          \
+       $ADDITIONAL     \
+       $SAG_AUTH       \
+       ${DOCKER_RUN_OPTIONS}     \
+       --mount "type=bind,src=$MNT/logs,dst=/fuseki/logs"      \
+       --mount "type=bind,src=$MNT/databases,dst=/fuseki/databases" \
+       --mount "type=bind,src=$MNT/config,dst=/fuseki/config"  \
+       "${IMAGE}" "$@"
+
+ret_code=$?
+echo "RC = $ret_code"
+if [ $ret_code = "0" ]
+then
+    rm -f $CIDFILE
+fi

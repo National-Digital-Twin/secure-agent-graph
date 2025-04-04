@@ -1,0 +1,34 @@
+%%  SPDX-License-Identifier: OGL-UK-3.0 %%
+graph LR
+    U1[Authenticated Query User]
+    U2[Authenticated Update User]
+
+    subgraph SC[Controlled Access SA-Graph Server Deployment]
+        subgraph A1[SC-Graph 1]
+            S1[Server]
+        end
+        subgraph Ax[SA-Graph ...]
+            SX[Server]
+        end
+        subgraph AN[SA-Graph N]
+            SN[Server]
+        end
+        subgraph AU["SA-Graph (Update)"]
+            SU[Server]
+        end
+        LB[Load Balancer]
+        LB2[Load Balancer]
+    end
+
+    K[(Event Log)]
+
+    U1 -- queries --> LB
+    U2 -- updates --> LB2
+    LB -- routes --> A1
+    LB -- routes --> Ax
+    LB -- routes --> AN
+    LB2 -- routes --> AU
+    A1 -- reads --> K
+    Ax -- reads --> K
+    AN -- reads --> K
+    AU -- updates --> K
