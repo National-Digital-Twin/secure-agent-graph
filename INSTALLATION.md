@@ -1,6 +1,5 @@
 # Installation
-**Repository:** `secure-agent-graph` 
-
+**Repository:** `secure-agent-graph`    
 **Description:** `This file provides detailed installation steps, including required dependencies and configurations for Secure Agent Graph.` 
 
 <!-- SPDX-License-Identifier: OGL-UK-3.0 -->
