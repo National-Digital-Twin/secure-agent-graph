@@ -1,0 +1,17 @@
+%%  SPDX-License-Identifier: OGL-UK-3.0 %%
+graph LR
+
+    U[Authenticated User]
+
+    subgraph SC[Persisted SA-Graph Server Deployment]
+        subgraph S[SAG Server]
+            LB[Server]
+            DB[(Datastore)]
+        end
+    end
+
+    I[(Event Log)]
+
+    U -- requests --> S
+    S -- updates --> I
+    I -- polls from --> S

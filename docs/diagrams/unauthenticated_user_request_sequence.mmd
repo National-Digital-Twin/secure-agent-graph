@@ -1,0 +1,10 @@
+%%  SPDX-License-Identifier: OGL-UK-3.0 %%
+sequenceDiagram
+    autonumber
+    actor U as Unauthenticated User
+    box Purple Secure Agent Graph
+        participant A as GraphQL API
+    end
+
+    U->>+A: Submits Query Request
+    A->>-U: Rejects Query Results

@@ -1,0 +1,25 @@
+%%  SPDX-License-Identifier: OGL-UK-3.0 %%
+graph LR
+    U[Authenticated User]
+    subgraph SC[Scaled SA-Graph Server Deployment]
+        subgraph A1[SAG Server 1]
+            S1[Server]
+        end
+        subgraph Ax[SAG Servers ...]
+            SX[Server]
+        end
+        subgraph AN[SAG Server N]
+            SN[Server]
+        end
+
+        LB[Load Balancer]
+    end
+    K[(Event Log)]
+
+    U -- queries --> LB
+    LB -- routes --> A1
+    LB -- routes --> Ax
+    LB -- routes --> AN
+    A1 -- reads --> K
+    Ax -- reads --> K
+    AN -- reads --> K

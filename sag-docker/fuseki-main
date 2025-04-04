@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+## SPDX-License-Identifier: Apache-2.0
+## Originally developed by Telicent Ltd.; subsequently adapted, enhanced, and maintained by the National Digital Twin Programme.
+  ##
+  ##  Copyright (c) Telicent Ltd.
+  ##
+  ##  Licensed under the Apache License, Version 2.0 (the "License");
+  ##  you may not use this file except in compliance with the License.
+  ##  You may obtain a copy of the License at
+  ##
+  ##      http://www.apache.org/licenses/LICENSE-2.0
+  ##
+  ##  Unless required by applicable law or agreed to in writing, software
+  ##  distributed under the License is distributed on an "AS IS" BASIS,
+  ##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ##  See the License for the specific language governing permissions and
+  ##  limitations under the License.
+  ##
+  ##
+  ##  Modifications made by the National Digital Twin Programme (NDTP)
+  ##  © Crown Copyright 2025. This work has been developed by the National Digital Twin Programme
+  ##  and is legally attributed to the Department for Business and Trade (UK) as the governing entity.
+
+ARGS="$@"
+
+## Environment variables.
+## One area? HOME==BASE?
+FUSEKI_HOME="${FUSEKI_HOME:-$PWD}"
+
+##FUSEKI_BASE="${FUSEKI_BASE:-$FUSEKI_HOME}"
+
+## Override of the Fuseki jar file location. Usually unset.
+
+##FUSEKI_JAR=
+
+## Directory of extra jars - Fuseki modules and dependencies.
+FUSEKI_LIB="$FUSEKI_HOME"'/lib'
+
+## Settings.
+## Name of the jar entry point.
+MAIN=org.apache.jena.fuseki.main.cmds.FusekiMainCmd
+
+DEBUG=
+VERBOSE=
+
+## ---- Functions
+
+function debug() {
+    [[ -n $DEBUG ]] || return
+    local MSG="$1"
+    echo "$MSG" 1>&2
+}
+
+if [ -z "$JAVA" ]
+then
+    if [ -z "$JAVA_HOME" ]
+    then
+	JAVA="$(which java)"
+    else
+        JAVA="$JAVA_HOME/bin/java"
+    fi
+fi
+
+if [ -z "$JAVA" ]
+then
+    (
+	echo "Cannot find a Java JDK."
+	echo "Please set either set JAVA or JAVA_HOME and put java (>=11) in your PATH."
+    ) 1>&2
+  exit 1
+fi
+
+debug "JAVA=$JAVA"
+
+## ---- Fuseki jar file if in the lib/ area.
+
+if [[ $VERBOSE == 'true' ]]
+then
+    (
+	echo "FUSEKI_HOME = $FUSEKI_HOME"
+	##echo "FUSEKI_JAR  = $FUSEKI_JAR"
+	echo "FUSEKI_LIB  = $FUSEKI_LIB"
+    ) 1>&2
+fi
+
+## ---- JVM
+
+# One database setup.
+JVM_ARGS=${JVM_ARGS:--Xmx2G}
+
+## ---- Logging
+## Fuseki use Apache Log4j2 for logging.
+## Set the logging via the usual log4j2 mechanisms
+##   https://logging.apache.org/log4j/2.x/manual/configuration.html
+## There is a built-in setup
+
+## Built-in Fuseki logging setup: in order:
+## 1/ Check for Log4j2 normal setup:  -Dlog4j2.configurationFile= etc.
+## 2/ Look for  file:log4j2.properties (current directory)
+## 3/ Classpath:  log4j2.properties
+## 4/ Built-in setup.
+##   By default: Usually (3) will find the logging.
+
+## To debug Fuseki logging setup: set environment variable
+## FUSEKI_LOGLOGGING or system property "fuseki.loglogging" to "true"
+
+## Log4j2: Setting log4j2 with some other file.
+##  Environment variable: LOG4J_CONFIGURATION_FILE
+##  SystemProperty log4j2.configurationFile
+##    https://logging.apache.org/log4j/2.x/manual/configuration.html#SystemProperties
+
+exec $JAVA $JVM_ARGS -cp "$FUSEKI_LIB"'/*' "$MAIN" $ARGS
