@@ -29,6 +29,18 @@ Maintainers are responsible for:
 NDTP does not accept public code contributions, but we welcome **bug reports and documentation feedback**.
 ---
 
+## Current Maintainers
+
+| Name | Organisation | Role | Contact |
+|------|-------------|------|---------|
+| Josh Samuel | Viable Data | Lead Maintainer | ndtp@viabledata.co.uk |
+| Josh Samuel | Viable Data | Security Contact | ndtp@viabledata.co.uk |
+| Josh Samuel | Viable Data | Documentation Lead | ndtp@viabledata.co.uk |
+
+For general issues, please **open a GitHub issue** rather than contacting maintainers directly.
+
+---
+
 ## Escalation Contacts
 
 If you need to escalate an issue that has not been addressed within a reasonable time:
