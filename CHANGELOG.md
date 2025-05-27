@@ -16,7 +16,6 @@ This project follows **Semantic Versioning (SemVer)** ([semver.org](https://semv
 - **Build metadata** – If needed, use `+build` (e.g., `2.1.0+20250314`).
 
 ---
-
 ## [Unreleased]
 
 ### Added
@@ -27,6 +26,19 @@ This project follows **Semantic Versioning (SemVer)** ([semver.org](https://semv
 
 ### Changed
 - Placeholder for changes to existing functionality.
+
+---
+
+## [Unreleased] 16-05-2025
+
+### Added
+- n/a
+
+### Fixed
+- n/a
+
+### Changed
+- Updated MAINTAINERS.md with updated supplier information.
 
 ---
 
