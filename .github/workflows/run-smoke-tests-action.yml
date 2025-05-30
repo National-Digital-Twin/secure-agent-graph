@@ -1,0 +1,36 @@
+name: Run Smoke Tests on Deploy
+
+on:
+  push:
+    branches:
+#      - 'main'
+      - 'smoke-test-on-deploy-action-branch'
+
+jobs:
+  run-sag-smoke-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      cognito-local:
+        image: jagregory/cognito-local:latest
+        ports:
+          - 9229:9229
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Ping cognito-local
+        run: |
+          curl http://localhost:9229
+
+#      - name: Set up Java
+#        uses: actions/setup-java@v4
+#        with:
+#          java-version: '21'
+#          distribution: 'temurin'
+#          cache: 'maven'
+#          cache-dependency-path: 'pom.xml'
+#          server-username: ${{ github.actor }}
+#          server-password: ${{ github.token }}
+
