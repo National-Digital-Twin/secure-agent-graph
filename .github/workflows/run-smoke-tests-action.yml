@@ -32,9 +32,11 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-          cache: 'maven'
+#          cache: 'maven'
           cache-dependency-path: 'pom.xml'
-          server-password: ${{ secrets.GH_PACKAGES_PAT }}
+          server-id: github
+          server-username: ${{ github.actor }}
+          server-password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build secure-agent-graph
         run: mvn clean install --batch-mode --no-transfer-progress -Dgpg.skip=true
