@@ -8,6 +8,7 @@ on:
 
 env:
   JWKS_URL: http://localhost:9229/local_6GLuhxhD/.well-known/jwks.json
+  HURL_VERSION: 6.1.1
 
 jobs:
   run-sag-smoke-tests:
@@ -34,9 +35,6 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
           cache-dependency-path: 'pom.xml'
-#          server-id: github
-#          server-username: ${{ github.actor }}
-#          server-password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure Maven settings
         run: |
@@ -49,6 +47,12 @@ jobs:
 #      - name: Setup cognito
 #        run:
 #          |
+
+      - name: Download Smoke Test Dependencies
+        run: |
+          sudo apt-add-repository -y ppa:lepapareil/hurl 
+          sudo apt install hurl="${{ env.HURL_VERSION }}"*
+          sudo apt-get install jq
 
       - name: Run secure-agent-graph Smoke Tests
         run: |
