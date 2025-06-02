@@ -6,6 +6,9 @@ on:
 #      - 'main'
       - 'smoke-test-on-deploy-action-branch'
 
+env:
+  JWKS_URL: http://localhost:9229/local_6GLuhxhD/.well-known/jwks.json
+
 jobs:
   run-sag-smoke-tests:
     runs-on: ubuntu-latest
@@ -24,13 +27,24 @@ jobs:
         run: |
           curl http://localhost:9229
 
-#      - name: Set up Java
-#        uses: actions/setup-java@v4
-#        with:
-#          java-version: '21'
-#          distribution: 'temurin'
-#          cache: 'maven'
-#          cache-dependency-path: 'pom.xml'
-#          server-username: ${{ github.actor }}
-#          server-password: ${{ github.token }}
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+          cache-dependency-path: 'pom.xml'
+          server-password: ${{ secrets.GH_PACKAGES_PAT }}
+
+      - name: Build secure-agent-graph
+        run: mvn clean install --batch-mode
+
+#      - name: Setup cognito
+#        run:
+#          |
+
+      - name: Run secure-agent-graph Smoke Tests
+        run: |
+          cd sag-docker/Test
+          ./smoke-test-local.sh
 

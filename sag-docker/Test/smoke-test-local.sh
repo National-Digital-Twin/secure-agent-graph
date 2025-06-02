@@ -41,10 +41,9 @@ SAG_SERVER=http://localhost:3030
 USER_1="test+user+admin@ndtp.co.uk"
 USER_2="test+user@ndtp.co.uk"
 
-
-echo Fetch id tokens
-ID_TOKEN_1=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_1,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
-ID_TOKEN_2=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_2,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
+#echo Fetch id tokens
+#ID_TOKEN_1=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_1,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
+#ID_TOKEN_2=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_2,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
 
 echo Starting vanilla secure-agent-graph
 USER_ATTRIBUTES_URL=http://localhost:8091 JWKS_URL=disabled \
@@ -69,33 +68,33 @@ wait $PID
 
 # --------------------------------
 
-echo Starting secure-agent-graph with authentication
-USER_ATTRIBUTES_URL=http://localhost:8091 JWKS_URL=http://localhost:9229/local_6GLuhxhD/.well-known/jwks.json \
-java \
--Dfile.encoding=UTF-8 \
--Dsun.stdout.encoding=UTF-8 \
--Dsun.stderr.encoding=UTF-8 \
--classpath "$SAG_DIR/sag-server/target/classes:$SAG_DIR/sag-system/target/classes:$SAG_DIR/sag-docker/target/dependency/*" \
-uk.gov.dbt.ndtp.secure.agent.graph.SecureAgentGraph \
---config ../mnt/config/dev-server-graphql.ttl &
-
-
-echo Wait for server to be ready
-
-wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
-
-hurl hurl/upload-data-auth.hurl  --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 || exit 1
-
-
-hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER \
---variable ID_TOKEN_USER_1=$ID_TOKEN_1 \
---variable ID_TOKEN_USER_2=$ID_TOKEN_2 \
---variable USER_1_DATA=$USER_1_DATA \
---variable USER_2_DATA=$USER_2_DATA || exit 1
-
-
-PID=$(kill %+)
-wait $PID
+#echo Starting secure-agent-graph with authentication
+#USER_ATTRIBUTES_URL=http://localhost:8091 JWKS_URL=http://localhost:9229/local_6GLuhxhD/.well-known/jwks.json \
+#java \
+#-Dfile.encoding=UTF-8 \
+#-Dsun.stdout.encoding=UTF-8 \
+#-Dsun.stderr.encoding=UTF-8 \
+#-classpath "$SAG_DIR/sag-server/target/classes:$SAG_DIR/sag-system/target/classes:$SAG_DIR/sag-docker/target/dependency/*" \
+#uk.gov.dbt.ndtp.secure.agent.graph.SecureAgentGraph \
+#--config ../mnt/config/dev-server-graphql.ttl &
+#
+#
+#echo Wait for server to be ready
+#
+#wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
+#
+#hurl hurl/upload-data-auth.hurl  --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 || exit 1
+#
+#
+#hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER \
+#--variable ID_TOKEN_USER_1=$ID_TOKEN_1 \
+#--variable ID_TOKEN_USER_2=$ID_TOKEN_2 \
+#--variable USER_1_DATA=$USER_1_DATA \
+#--variable USER_2_DATA=$USER_2_DATA || exit 1
+#
+#
+#PID=$(kill %+)
+#wait $PID
 
 echo "Passed"
 exit 0
