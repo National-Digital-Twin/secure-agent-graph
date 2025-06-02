@@ -62,9 +62,7 @@ hurl hurl/sqarql-text-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable 
 
 # --------------------------------
 
-PID=$(kill %+)
-echo $PID
-wait $PID
+kill -15 $(lsof -ti:3030)
 
 # --------------------------------
 
@@ -93,8 +91,7 @@ wait $PID
 #--variable USER_2_DATA=$USER_2_DATA || exit 1
 #
 #
-#PID=$(kill %+)
-#wait $PID
+#kill -15 $(lsof -ti:3030)
 
 echo "Passed"
 exit 0
