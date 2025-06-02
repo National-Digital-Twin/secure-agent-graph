@@ -34,9 +34,10 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
           cache-dependency-path: 'pom.xml'
+          server-password: ${{ secrets.GH_PACKAGES_PAT }}
 
       - name: Build secure-agent-graph
-        run: mvn clean install --batch-mode -Dgpg.skip
+        run: mvn clean install --batch-mode --no-transfer-progress
 
 #      - name: Setup cognito
 #        run:
