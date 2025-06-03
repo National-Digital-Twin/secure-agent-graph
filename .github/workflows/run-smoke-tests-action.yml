@@ -17,8 +17,8 @@ jobs:
     services:
       cognito-local:
         image: jagregory/cognito-local:latest
-        volumes:
-          - ./sag-docker/Test/cognito-local:/app/.cognito
+#        volumes:
+#          - ./sag-docker/Test/cognito-local:/app/.cognito
         ports:
           - 9229:9229
 
