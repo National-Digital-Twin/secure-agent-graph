@@ -47,6 +47,7 @@ echo "ID Token 2: $ID_TOKEN_2"
 echo "Starting secure-agent-graph with authentication"
 
 USER_ATTRIBUTES_URL=http://localhost:8091 \
+JWKS_URL=http://localhost:9229/local_6GLuhxhD/.well-known/jwks.json \
 java \
 -Dfile.encoding=UTF-8 \
 -Dsun.stdout.encoding=UTF-8 \
@@ -60,7 +61,9 @@ echo "Wait for server to be ready"
 
 wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
 
-hurl hurl/upload-data-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 --very-verbose || exit 1
+#hurl hurl/upload-data-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 --very-verbose || exit 1
+curl -XPOST -T data1.trig --header "Content-type: text/trig" -H "Authorization: bearer $ID_TOKEN_1" http://localhost:3031/ds/upload
+
 
 hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER --very-verbose \
 --variable ID_TOKEN_USER_1=$ID_TOKEN_1 \
