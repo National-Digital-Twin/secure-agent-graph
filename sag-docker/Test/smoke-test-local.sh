@@ -42,8 +42,8 @@ USER_1="test+user+admin@ndtp.co.uk"
 USER_2="test+user@ndtp.co.uk"
 
 echo Fetch id tokens
-ID_TOKEN_1=$(aws --endpoint http://0.0.0.0:9229 --region 'eu-west-2' cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_1,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
-ID_TOKEN_2=$(aws --endpoint http://0.0.0.0:9229 --region 'eu-west-2' cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_2,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
+ID_TOKEN_1=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_1,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
+ID_TOKEN_2=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_2,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
 
 echo Starting vanilla secure-agent-graph
 USER_ATTRIBUTES_URL=http://localhost:8091 JWKS_URL=disabled \
