@@ -21,7 +21,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Cognito Local
+      - name: Set up Cognito Local
         run: |
           docker run -d --name cognito-local-ndtp \
             -v ./sag-docker/Test/cognito-local:/app/.cognito \

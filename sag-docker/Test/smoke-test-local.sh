@@ -45,26 +45,6 @@ echo Fetch id tokens
 ID_TOKEN_1=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_1,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
 ID_TOKEN_2=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_2,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
 
-echo Starting vanilla secure-agent-graph
-USER_ATTRIBUTES_URL=http://localhost:8091 JWKS_URL=disabled \
-java \
--Dfile.encoding=UTF-8 \
--Dsun.stdout.encoding=UTF-8 \
--Dsun.stderr.encoding=UTF-8 \
--classpath "$SAG_DIR/sag-server/target/classes:$SAG_DIR/sag-system/target/classes:$SAG_DIR/sag-docker/target/dependency/*" \
-uk.gov.dbt.ndtp.secure.agent.graph.SecureAgentGraph \
---config  ../mnt/config/dev-server-vanilla.ttl &
-
-wait_for_url "$SAG_SERVER/ds" 60
-hurl hurl/upload-data-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER || exit 1
-hurl hurl/sparql-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable USER_1_DATA=$USER_1_DATA --variable USER_2_DATA=$USER_2_DATA || exit 1
-hurl hurl/sqarql-text-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable USER_1_DATA=$USER_1_DATA --variable USER_2_DATA=$USER_2_DATA || exit 1
-
-# --------------------------------
-
-kill -15 $(lsof -ti:3030)
-
-# --------------------------------
 
 echo Starting secure-agent-graph with authentication
 USER_ATTRIBUTES_URL=http://localhost:8091 JWKS_URL=http://localhost:9229/local_6GLuhxhD/.well-known/jwks.json \
@@ -92,6 +72,28 @@ hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER --verbos
 
 
 kill -15 $(lsof -ti:3030)
+
+
+echo Starting vanilla secure-agent-graph
+USER_ATTRIBUTES_URL=http://localhost:8091 JWKS_URL=disabled \
+java \
+-Dfile.encoding=UTF-8 \
+-Dsun.stdout.encoding=UTF-8 \
+-Dsun.stderr.encoding=UTF-8 \
+-classpath "$SAG_DIR/sag-server/target/classes:$SAG_DIR/sag-system/target/classes:$SAG_DIR/sag-docker/target/dependency/*" \
+uk.gov.dbt.ndtp.secure.agent.graph.SecureAgentGraph \
+--config  ../mnt/config/dev-server-vanilla.ttl &
+
+wait_for_url "$SAG_SERVER/ds" 60
+hurl hurl/upload-data-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER || exit 1
+hurl hurl/sparql-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable USER_1_DATA=$USER_1_DATA --variable USER_2_DATA=$USER_2_DATA || exit 1
+hurl hurl/sqarql-text-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable USER_1_DATA=$USER_1_DATA --variable USER_2_DATA=$USER_2_DATA || exit 1
+
+# --------------------------------
+
+kill -15 $(lsof -ti:3030)
+
+# --------------------------------
 
 echo "Passed"
 exit 0
