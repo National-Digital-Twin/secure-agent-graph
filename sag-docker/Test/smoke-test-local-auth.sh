@@ -20,8 +20,6 @@
 # requires cognito to be running
 # Debugging end process if tests fail: kill -9 $(lsof -ti:3030)
 
-SAG_PORT=3031
-
 SAG_DIR=../..
 USER_1_DATA="http://example/person4321"
 USER_2_DATA="http://example/person9876"
@@ -34,6 +32,8 @@ USER_2="test+user@ndtp.co.uk"
 #    printf 'GET %s\nAuthorization: bearer %s\nHTTP 200' "$1" $3 | hurl --retry "$2";# > /dev/null;
 #    return 0
 #}
+
+docker ps
 
 echo "Starting auth test"
 
@@ -54,16 +54,16 @@ java \
 -Dsun.stderr.encoding=UTF-8 \
 -classpath "$SAG_DIR/sag-server/target/classes:$SAG_DIR/sag-system/target/classes:$SAG_DIR/sag-docker/target/dependency/*" \
 uk.gov.dbt.ndtp.secure.agent.graph.SecureAgentGraph \
---config ../mnt/config/dev-server-sag.ttl -port $SAG_PORT &
+--config ../mnt/config/dev-server-graphql.ttl &
 
 echo "Wait for server to be ready"
 
 sleep 60
-curl http://localhost:3031/ds
+curl http://localhost:3030/ds
 #wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
 
 #hurl hurl/upload-data-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 --very-verbose || exit 1
-curl -XPOST -T data1.trig --header "Content-type: text/trig" -H "Authorization: bearer $ID_TOKEN_1" http://localhost:3031/ds/upload
+curl -XPOST -T data1.trig --header "Content-type: text/trig" -H "Authorization: bearer $ID_TOKEN_1" http://localhost:3030/ds/upload
 
 
 hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER --very-verbose \
@@ -72,7 +72,7 @@ hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER --very-v
 --variable USER_1_DATA=$USER_1_DATA \
 --variable USER_2_DATA=$USER_2_DATA || exit 1
 
-kill -15 $(lsof -ti:3031)
+kill -15 $(lsof -ti:3030)
 
 echo "Passed"
 exit 0
