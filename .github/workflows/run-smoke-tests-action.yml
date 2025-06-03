@@ -81,8 +81,12 @@ jobs:
           sudo apt install hurl="${{ env.HURL_VERSION }}"*
           sudo apt-get install jq
 
-      - name: Run secure-agent-graph Smoke Tests
+      - name: Run SAG no-auth-smoke-tests
         run: |
           cd sag-docker/Test
-          ./smoke-test-local.sh
+          ./smoke-test-local-no-auth.sh
 
+      - name: Run SAG auth-smoke-tests
+        run: |
+          cd sag-docker/Test
+          ./smoke-test-local-auth.sh
