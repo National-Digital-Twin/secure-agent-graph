@@ -81,10 +81,10 @@ echo Wait for server to be ready
 
 wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
 
-hurl hurl/upload-data-auth.hurl  --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 || exit 1
+hurl hurl/upload-data-auth.hurl  --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 --verbose || exit 1
 
 
-hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER \
+hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER --verbose \
 --variable ID_TOKEN_USER_1=$ID_TOKEN_1 \
 --variable ID_TOKEN_USER_2=$ID_TOKEN_2 \
 --variable USER_1_DATA=$USER_1_DATA \
