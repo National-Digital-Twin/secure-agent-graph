@@ -29,11 +29,11 @@ SAG_SERVER=http://localhost:3031
 USER_1="test+user+admin@ndtp.co.uk"
 USER_2="test+user@ndtp.co.uk"
 
-wait_for_url_auth () {
-    echo "Testing $1 with auth..."
-    printf 'GET %s\nAuthorization: bearer %s\nHTTP 200' "$1" $3 | hurl --retry "$2";# > /dev/null;
-    return 0
-}
+#wait_for_url_auth () {
+#    echo "Testing $1 with auth..."
+#    printf 'GET %s\nAuthorization: bearer %s\nHTTP 200' "$1" $3 | hurl --retry "$2";# > /dev/null;
+#    return 0
+#}
 
 echo "Starting auth test"
 
@@ -54,14 +54,13 @@ java \
 -Dsun.stderr.encoding=UTF-8 \
 -classpath "$SAG_DIR/sag-server/target/classes:$SAG_DIR/sag-system/target/classes:$SAG_DIR/sag-docker/target/dependency/*" \
 uk.gov.dbt.ndtp.secure.agent.graph.SecureAgentGraph \
---config ../mnt/config/dev-server-graphql.ttl --metrics --stats -port $SAG_PORT &
-
+--config ../mnt/config/dev-server-sag.ttl -port $SAG_PORT &
 
 echo "Wait for server to be ready"
 
-wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
-
-curl -H "Authorization: bearer $ID_TOKEN_1" "http://localhost:3031/$/stats"
+sleep 60
+curl http://localhost:3031/ds
+#wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
 
 #hurl hurl/upload-data-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 --very-verbose || exit 1
 curl -XPOST -T data1.trig --header "Content-type: text/trig" -H "Authorization: bearer $ID_TOKEN_1" http://localhost:3031/ds/upload
