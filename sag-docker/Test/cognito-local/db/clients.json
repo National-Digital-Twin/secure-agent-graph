@@ -1,0 +1,18 @@
+{
+  "Clients": {
+
+    "6967e8jkb0oqcm9brjkrbcrhj": {
+      "ClientId": "6967e8jkb0oqcm9brjkrbcrhj",
+      "ClientName": "access",
+      "CreationDate": "2023-07-16T16:12:27.725Z",
+      "LastModifiedDate": "2023-07-16T16:12:27.725Z",
+      "TokenValidityUnits": {
+        "AccessToken": "hours",
+        "IdToken": "minutes",
+        "RefreshToken": "days"
+      },
+      "UserPoolId": "local_6GLuhxhD"
+    }
+
+  }
+}
