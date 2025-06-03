@@ -7,6 +7,9 @@ on:
       - 'feature/run-smoke-tests-on-deploy'
 
 env:
+  AWS_REGION: eu-west-2
+  AWS_ACCESS_KEY_ID: smoke-test
+  AWS_SECRET_ACCESS_KEY: smoke-test
   JWKS_URL: http://localhost:9229/local_6GLuhxhD/.well-known/jwks.json
   HURL_VERSION: 6.1.1
 
@@ -14,21 +17,16 @@ jobs:
   run-sag-smoke-tests:
     runs-on: ubuntu-latest
 
-    services:
-      cognito-local:
-        image: jagregory/cognito-local:latest
-#        volumes:
-#          - ./sag-docker/Test/cognito-local:/app/.cognito
-        ports:
-          - 9229:9229
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Ping cognito-local
+      - name: Setup Cognito Local
         run: |
-          curl http://localhost:9229
+          docker run -d --name cognito-local-ndtp \
+            -v ./sag-docker/Test/cognito-local:/app/.cognito \
+            -p 9229:9229 \
+            jagregory/cognito-local:latest
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -46,9 +44,24 @@ jobs:
       - name: Build secure-agent-graph
         run: mvn clean install --batch-mode --no-transfer-progress -Dgpg.skip=true
 
-#      - name: Setup cognito
-#        run:
-#          |
+      - name: Ping cognito-local
+        run: |
+          curl http://localhost:9229
+
+      - name: Configure Cognito Local
+        run: |
+          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-create-user --user-pool-id local_6GLuhxhD --username test+user@ndtp.co.uk --cli-read-timeout 0 --message-action SUPPRESS --user-attributes Name=email,Value=test+user@ndtp.co.uk 1> /dev/null
+          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-create-user --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --cli-read-timeout 0 --message-action SUPPRESS --user-attributes Name=email,Value=test+user+admin@ndtp.co.uk 1> /dev/null
+          
+          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-set-user-password --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --password password --permanent  1> /dev/null
+          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-set-user-password --user-pool-id local_6GLuhxhD --username test+user@ndtp.co.uk --password password --permanent 1> /dev/null
+          
+          aws --endpoint http://0.0.0.0:9229 cognito-idp create-group --user-pool-id local_6GLuhxhD  --group-name ianode_admin 1> /dev/null
+          aws --endpoint http://0.0.0.0:9229 cognito-idp create-group --user-pool-id local_6GLuhxhD  --group-name ianode_read 1> /dev/null
+          
+          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-add-user-to-group --user-pool-id local_6GLuhxhD --username test+user@ndtp.co.uk --group-name ianode_read 1> /dev/null
+          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-add-user-to-group --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --group-name ianode_admin 1> /dev/null
+          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-add-user-to-group --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --group-name ianode_read 1> /dev/null
 
       - name: Download Smoke Test Dependencies
         run: |
