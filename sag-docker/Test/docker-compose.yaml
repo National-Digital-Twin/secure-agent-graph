@@ -12,6 +12,7 @@ services:
   smoke-test-secure-agent-graph-auth:
     image: ghcr.io/national-digital-twin/secure-agent-graph:0.90.0
     depends_on:
+      - smoke-test-cognito-local
     ports:
       - "3031:3031"
     environment:
