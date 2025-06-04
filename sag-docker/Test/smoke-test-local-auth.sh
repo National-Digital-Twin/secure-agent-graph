@@ -31,7 +31,7 @@ wait_for_url_auth () {
     echo "Testing $1 with auth..."
     printf 'GET %s\nAuthorization: bearer %s\nHTTP 200' "$1" $3 \
       | hurl --retry "$2";# > /dev/null;
-    return 0
+    return $?
 }
 
 echo "Starting auth test"
