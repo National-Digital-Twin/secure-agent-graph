@@ -54,7 +54,7 @@ hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER --very-v
 --variable USER_1_DATA=$USER_1_DATA \
 --variable USER_2_DATA=$USER_2_DATA
 
-docker compose logs smoke-test-secure-agent-graph-auth --follow
+docker compose logs smoke-test-secure-agent-graph-auth
 #docker compose down
 
 echo "Passed"

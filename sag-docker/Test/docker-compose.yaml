@@ -44,6 +44,9 @@ services:
       JWKS_URL: disabled
     volumes:
       - type: bind
+        source: ../mnt/logback.xml
+        target: /fuseki/logback.xml
+      - type: bind
         source: ../mnt/logs
         target: /fuseki/logs
       - type: bind
