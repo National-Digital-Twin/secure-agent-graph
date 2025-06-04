@@ -18,6 +18,7 @@ services:
     environment:
       JAVA_OPTIONS: -Xmx2048m -Xms2048m
       JWKS_URL: http://smoke-test-cognito-local:9229/local_6GLuhxhD/.well-known/jwks.json
+      USER_ATTRIBUTES_URL: http://localhost:8091
     networks:
       - smoke-test
     volumes:
