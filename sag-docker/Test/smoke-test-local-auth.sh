@@ -20,12 +20,12 @@
 # requires cognito to be running
 # Debugging end process if tests fail: kill -9 $(lsof -ti:3030)
 
-SAG_DIR=../..
-USER_1_DATA="http://example/person4321"
-USER_2_DATA="http://example/person9876"
-SAG_SERVER=http://localhost:3031
-USER_1="test+user+admin@ndtp.co.uk"
-USER_2="test+user@ndtp.co.uk"
+export SAG_DIR=../..
+export USER_1_DATA="http://example/person4321"
+export USER_2_DATA="http://example/person9876"
+export SAG_SERVER=http://localhost:3031
+export USER_1="test+user+admin@ndtp.co.uk"
+export USER_2="test+user@ndtp.co.uk"
 
 wait_for_url_auth () {
     echo "Testing $1 with auth..."
@@ -38,11 +38,17 @@ echo "Starting auth test"
 #docker compose up -d
 
 echo "Fetch id tokens"
-ID_TOKEN_1=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_1,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
-ID_TOKEN_2=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_2,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
+export ID_TOKEN_1=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_1,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
+export ID_TOKEN_2=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_2,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
 
 echo "Starting secure-agent-graph with authentication"
 echo "Wait for server to be ready"
+
+echo -e "\n\n\n\n"
+
+env
+
+echo -e "\n\n\n\n"
 
 wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
 
