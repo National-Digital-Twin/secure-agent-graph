@@ -44,6 +44,8 @@ hurl hurl/upload-data-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER || { docker
 hurl hurl/sparql-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable USER_1_DATA=$USER_1_DATA --variable USER_2_DATA=$USER_2_DATA || { docker compose down; exit 1; }
 hurl hurl/sqarql-text-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable USER_1_DATA=$USER_1_DATA --variable USER_2_DATA=$USER_2_DATA || { docker compose down; exit 1; }
 
+docker compose logs smoke-test-secure-agent-graph-no-auth
+
 echo "Passed"
 
 #docker compose down

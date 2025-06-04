@@ -46,16 +46,15 @@ echo "Wait for server to be ready"
 
 wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
 
-curl http://localhost:3030/ds
+hurl hurl/upload-data-auth.hurl  --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1
 
-hurl hurl/upload-data-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 --very-verbose || { docker compose down; exit 1; }
-
-hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER --very-verbose \
+hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER \
 --variable ID_TOKEN_USER_1=$ID_TOKEN_1 \
 --variable ID_TOKEN_USER_2=$ID_TOKEN_2 \
 --variable USER_1_DATA=$USER_1_DATA \
---variable USER_2_DATA=$USER_2_DATA || { docker compose down; exit 1; }
+--variable USER_2_DATA=$USER_2_DATA
 
+docker compose logs smoke-test-secure-agent-graph-auth
 #docker compose down
 
 echo "Passed"
