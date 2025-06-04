@@ -51,8 +51,8 @@ jobs:
 
       - name: Configure Cognito Local
         run: |
-          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-create-user --user-pool-id local_6GLuhxhD --username test+user@ndtp.co.uk --cli-read-timeout 0 --message-action SUPPRESS --user-attributes Name=email,Value=test+user@ndtp.co.uk
-          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-create-user --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --cli-read-timeout 0 --message-action SUPPRESS --user-attributes Name=email,Value=test+user+admin@ndtp.co.uk
+          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-create-user --user-pool-id local_6GLuhxhD --username test+user@ndtp.co.uk --cli-read-timeout 0 --message-action SUPPRESS --user-attributes Name=email,Value=test+user@ndtp.co.uk || if [[ $? -eq 254 ]]; then return 0; fi
+          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-create-user --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --cli-read-timeout 0 --message-action SUPPRESS --user-attributes Name=email,Value=test+user+admin@ndtp.co.uk || if [[ $? -eq 254 ]]; then return 0; fi
 
           aws --endpoint http://0.0.0.0:9229 cognito-idp admin-set-user-password --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --password password --permanent
           aws --endpoint http://0.0.0.0:9229 cognito-idp admin-set-user-password --user-pool-id local_6GLuhxhD --username test+user@ndtp.co.uk --password password --permanent
