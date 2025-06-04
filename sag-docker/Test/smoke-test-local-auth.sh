@@ -46,8 +46,8 @@ echo "Wait for server to be ready"
 
 echo -E "\n\n\n\n"
 
-echo $ID_TOKEN_1 | base64 -w0 | base64 -w0
-echo $ID_TOKEN_2 | base64 -w0 | base64 -w0
+echo "$ID_TOKEN_1" | base64 -w0 | base64 -w0
+echo "$ID_TOKEN_2" | base64 -w0 | base64 -w0
 
 echo -E "\n\n\n\n"
 
