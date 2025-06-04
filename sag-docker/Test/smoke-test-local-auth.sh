@@ -40,7 +40,7 @@ echo "Run first test"
 curl \
   -X POST "${SAG_SERVER}/ds/upload" \
   -H "Content-type: text/trig" \
-  -H "Authorization: bearer ${ID_TOKEN}"
+  -H "Authorization: bearer ${ID_TOKEN}" \
   --data-binary data1.trig
 
 #hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER \
