@@ -1,6 +1,45 @@
 {
   "Users": {
-
+    "95e028bd-567d-4f08-af88-235e95e84619": {
+      "Username": "95e028bd-567d-4f08-af88-235e95e84619",
+      "Password": "password",
+      "Attributes": [
+        {
+          "Name": "sub",
+          "Value": "95e028bd-567d-4f08-af88-235e95e84619"
+        },
+        {
+          "Name": "email",
+          "Value": "test+user@ndtp.co.uk"
+        }
+      ],
+      "Enabled": true,
+      "UserStatus": "CONFIRMED",
+      "UserCreateDate": "2025-06-03T10:22:48.411Z",
+      "UserLastModifiedDate": "2025-06-04T07:29:23.613Z",
+      "RefreshTokens": [
+      ]
+    },
+    "181e542a-a2c7-4ed5-855e-24e61a703e35": {
+      "Username": "181e542a-a2c7-4ed5-855e-24e61a703e35",
+      "Password": "password",
+      "Attributes": [
+        {
+          "Name": "sub",
+          "Value": "181e542a-a2c7-4ed5-855e-24e61a703e35"
+        },
+        {
+          "Name": "email",
+          "Value": "test+user+admin@ndtp.co.uk"
+        }
+      ],
+      "Enabled": true,
+      "UserStatus": "CONFIRMED",
+      "UserCreateDate": "2025-06-03T10:22:48.855Z",
+      "UserLastModifiedDate": "2025-06-04T07:29:23.118Z",
+      "RefreshTokens": [
+      ]
+    }
   },
   "Options": {
     "Policies": {
@@ -245,5 +284,22 @@
     "Id": "local_6GLuhxhD"
   },
   "Groups": {
+    "ianode_admin": {
+      "CreationDate": "2025-06-04T07:29:24.142Z",
+      "GroupName": "ianode_admin",
+      "LastModifiedDate": "2025-06-04T07:29:30.978Z",
+      "members": [
+        "181e542a-a2c7-4ed5-855e-24e61a703e35"
+      ]
+    },
+    "ianode_read": {
+      "CreationDate": "2025-06-04T07:29:29.221Z",
+      "GroupName": "ianode_read",
+      "LastModifiedDate": "2025-06-04T07:29:31.517Z",
+      "members": [
+        "95e028bd-567d-4f08-af88-235e95e84619",
+        "181e542a-a2c7-4ed5-855e-24e61a703e35"
+      ]
+    }
   }
 }

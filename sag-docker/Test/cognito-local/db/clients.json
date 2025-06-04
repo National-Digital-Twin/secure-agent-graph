@@ -1,6 +1,5 @@
 {
   "Clients": {
-
     "6967e8jkb0oqcm9brjkrbcrhj": {
       "ClientId": "6967e8jkb0oqcm9brjkrbcrhj",
       "ClientName": "access",
@@ -13,6 +12,5 @@
       },
       "UserPoolId": "local_6GLuhxhD"
     }
-
   }
 }
