@@ -23,7 +23,7 @@
 SAG_DIR=../..
 USER_1_DATA="http://example/person4321"
 USER_2_DATA="http://example/person9876"
-SAG_SERVER=http://localhost:3030
+SAG_SERVER=http://localhost:3031
 USER_1="test+user+admin@ndtp.co.uk"
 USER_2="test+user@ndtp.co.uk"
 
@@ -33,47 +33,30 @@ wait_for_url_auth () {
     return 0
 }
 
-docker ps
-
 echo "Starting auth test"
+
+docker compose up -d
 
 echo "Fetch id tokens"
 ID_TOKEN_1=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_1,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
 ID_TOKEN_2=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_2,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
 
-echo "ID Token 1: $ID_TOKEN_1"
-echo "ID Token 2: $ID_TOKEN_2"
-
 echo "Starting secure-agent-graph with authentication"
-
-USER_ATTRIBUTES_URL=http://localhost:8091 \
-JWKS_URL=http://localhost:9229/local_6GLuhxhD/.well-known/jwks.json \
-java \
--Dfile.encoding=UTF-8 \
--Dsun.stdout.encoding=UTF-8 \
--Dsun.stderr.encoding=UTF-8 \
--classpath "$SAG_DIR/sag-server/target/classes:$SAG_DIR/sag-system/target/classes:$SAG_DIR/sag-docker/target/dependency/*" \
-uk.gov.dbt.ndtp.secure.agent.graph.SecureAgentGraph \
---config ../mnt/config/dev-server-graphql.ttl &
-
 echo "Wait for server to be ready"
 
-#sleep 60
 wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
 
 curl http://localhost:3030/ds
 
-hurl hurl/upload-data-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 --very-verbose || exit 1
-#curl -XPOST -T data1.trig --header "Content-type: text/trig" -H "Authorization: bearer $ID_TOKEN_1" http://localhost:3030/ds/upload
+hurl hurl/upload-data-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 || { docker compose down; exit 1; }
 
-
-hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER --very-verbose \
+hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER \
 --variable ID_TOKEN_USER_1=$ID_TOKEN_1 \
 --variable ID_TOKEN_USER_2=$ID_TOKEN_2 \
 --variable USER_1_DATA=$USER_1_DATA \
---variable USER_2_DATA=$USER_2_DATA || exit 1
+--variable USER_2_DATA=$USER_2_DATA || { docker compose down; exit 1; }
 
-kill -15 $(lsof -ti:3030)
+docker compose down
 
 echo "Passed"
 exit 0

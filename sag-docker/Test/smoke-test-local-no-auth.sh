@@ -36,25 +36,16 @@ USER_1="test+user+admin@ndtp.co.uk"
 USER_2="test+user@ndtp.co.uk"
 
 echo Starting vanilla secure-agent-graph
-USER_ATTRIBUTES_URL=http://localhost:8091 JWKS_URL=disabled \
-java \
--Dfile.encoding=UTF-8 \
--Dsun.stdout.encoding=UTF-8 \
--Dsun.stderr.encoding=UTF-8 \
--classpath "$SAG_DIR/sag-server/target/classes:$SAG_DIR/sag-system/target/classes:$SAG_DIR/sag-docker/target/dependency/*" \
-uk.gov.dbt.ndtp.secure.agent.graph.SecureAgentGraph \
---config  ../mnt/config/dev-server-vanilla.ttl &
+
+docker compose up -d
 
 wait_for_url "$SAG_SERVER/ds" 60
-hurl hurl/upload-data-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER || exit 1
-hurl hurl/sparql-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable USER_1_DATA=$USER_1_DATA --variable USER_2_DATA=$USER_2_DATA || exit 1
-hurl hurl/sqarql-text-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable USER_1_DATA=$USER_1_DATA --variable USER_2_DATA=$USER_2_DATA || exit 1
-
-# --------------------------------
-
-kill -15 $(lsof -ti:3030)
-
-# --------------------------------
+hurl hurl/upload-data-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER || { docker compose down; exit 1; }
+hurl hurl/sparql-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable USER_1_DATA=$USER_1_DATA --variable USER_2_DATA=$USER_2_DATA || { docker compose down; exit 1; }
+hurl hurl/sqarql-text-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable USER_1_DATA=$USER_1_DATA --variable USER_2_DATA=$USER_2_DATA || { docker compose down; exit 1; }
 
 echo "Passed"
+
+docker compose down
+
 exit 0
