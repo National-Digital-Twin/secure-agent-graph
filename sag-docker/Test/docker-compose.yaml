@@ -1,23 +1,12 @@
 services:
-  smoke-test-cognito-local:
-    image: jagregory/cognito-local:latest
-    restart: always
-    networks:
-      - smoke-test
-    volumes:
-      - ./cognito-local:/app/.cognito
-    ports:
-      - "9229:9229"
-
   smoke-test-secure-agent-graph-auth:
     image: ghcr.io/national-digital-twin/secure-agent-graph:0.90.0
     depends_on:
-      - smoke-test-cognito-local
     ports:
       - "3031:3031"
     environment:
       JAVA_OPTIONS: -Xmx2048m -Xms2048m
-      JWKS_URL: http://smoke-test-cognito-local:9229/local_6GLuhxhD/.well-known/jwks.json
+      JWKS_URL: http://cognito-local-ndtp:9229/local_6GLuhxhD/.well-known/jwks.json
     networks:
       - smoke-test
     volumes:
