@@ -15,7 +15,7 @@ env:
 
 jobs:
   run-sag-smoke-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout code
