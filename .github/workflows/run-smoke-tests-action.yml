@@ -84,7 +84,7 @@ jobs:
       - name: Start Smoke Test Containers
         run: |
           cd sag-docker/Test
-          docker compose --version
+          docker compose version
           docker compose up -d
           docker ps
           ./smoke-test-local-auth.sh
