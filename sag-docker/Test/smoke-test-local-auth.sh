@@ -46,6 +46,7 @@ echo "Wait for server to be ready"
 
 wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
 
+curl --header 'Content-type: text/trig' --header 'Authorization: bearer $ID_TOKEN_1' --data-binary '@hurl/data1.trig' 'http://localhost:3031/ds/upload'
 hurl hurl/upload-data-auth.hurl  --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 --very-verbose
 
 hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER --very-verbose \
