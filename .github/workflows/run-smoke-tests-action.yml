@@ -21,47 +21,47 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Cognito Local
-        run: |
-          docker run -d --name cognito-local-ndtp \
-            -v ./sag-docker/Test/cognito-local:/app/.cognito \
-            -p 9229:9229 \
-            jagregory/cognito-local:latest
+#      - name: Set up Cognito Local
+#        run: |
+#          docker run -d --name cognito-local-ndtp \
+#            -v ./sag-docker/Test/cognito-local:/app/.cognito \
+#            -p 9229:9229 \
+#            jagregory/cognito-local:latest
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: 'maven'
-          cache-dependency-path: 'pom.xml'
+#      - name: Set up Java
+#        uses: actions/setup-java@v4
+#        with:
+#          java-version: '21'
+#          distribution: 'temurin'
+#          cache: 'maven'
+#          cache-dependency-path: 'pom.xml'
 
-      - name: Configure Maven settings
-        run: |
-          mkdir -p ~/.m2
-          echo "<settings><servers><server><id>github</id><username>${{ github.actor }}</username><password>${{ secrets.GH_PACKAGES_PAT }}</password></server></servers></settings>" > ~/.m2/settings.xml
+#      - name: Configure Maven settings
+#        run: |
+#          mkdir -p ~/.m2
+#          echo "<settings><servers><server><id>github</id><username>${{ github.actor }}</username><password>${{ secrets.GH_PACKAGES_PAT }}</password></server></servers></settings>" > ~/.m2/settings.xml
+#
+#      - name: Build secure-agent-graph
+#        run: mvn clean install --batch-mode --no-transfer-progress -Dgpg.skip=true
 
-      - name: Build secure-agent-graph
-        run: mvn clean install --batch-mode --no-transfer-progress -Dgpg.skip=true
+#      - name: Ping cognito-local
+#        run: |
+#          curl http://localhost:9229
 
-      - name: Ping cognito-local
-        run: |
-          curl http://localhost:9229
-
-      - name: Configure Cognito Local
-        run: |
-          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-create-user --user-pool-id local_6GLuhxhD --username test+user@ndtp.co.uk --cli-read-timeout 0 --message-action SUPPRESS --user-attributes Name=email,Value=test+user@ndtp.co.uk
-          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-create-user --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --cli-read-timeout 0 --message-action SUPPRESS --user-attributes Name=email,Value=test+user+admin@ndtp.co.uk
-          
-          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-set-user-password --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --password password --permanent
-          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-set-user-password --user-pool-id local_6GLuhxhD --username test+user@ndtp.co.uk --password password --permanent
-          
-          aws --endpoint http://0.0.0.0:9229 cognito-idp create-group --user-pool-id local_6GLuhxhD  --group-name ianode_admin
-          aws --endpoint http://0.0.0.0:9229 cognito-idp create-group --user-pool-id local_6GLuhxhD  --group-name ianode_read
-          
-          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-add-user-to-group --user-pool-id local_6GLuhxhD --username test+user@ndtp.co.uk --group-name ianode_read
-          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-add-user-to-group --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --group-name ianode_admin
-          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-add-user-to-group --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --group-name ianode_read
+#      - name: Configure Cognito Local
+#        run: |
+#          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-create-user --user-pool-id local_6GLuhxhD --username test+user@ndtp.co.uk --cli-read-timeout 0 --message-action SUPPRESS --user-attributes Name=email,Value=test+user@ndtp.co.uk
+#          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-create-user --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --cli-read-timeout 0 --message-action SUPPRESS --user-attributes Name=email,Value=test+user+admin@ndtp.co.uk
+#
+#          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-set-user-password --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --password password --permanent
+#          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-set-user-password --user-pool-id local_6GLuhxhD --username test+user@ndtp.co.uk --password password --permanent
+#
+#          aws --endpoint http://0.0.0.0:9229 cognito-idp create-group --user-pool-id local_6GLuhxhD  --group-name ianode_admin
+#          aws --endpoint http://0.0.0.0:9229 cognito-idp create-group --user-pool-id local_6GLuhxhD  --group-name ianode_read
+#
+#          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-add-user-to-group --user-pool-id local_6GLuhxhD --username test+user@ndtp.co.uk --group-name ianode_read
+#          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-add-user-to-group --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --group-name ianode_admin
+#          aws --endpoint http://0.0.0.0:9229 cognito-idp admin-add-user-to-group --user-pool-id local_6GLuhxhD --username test+user+admin@ndtp.co.uk --group-name ianode_read
 
 #      - name: (debug) Start SAG outside the smoke test
 #        run: |
