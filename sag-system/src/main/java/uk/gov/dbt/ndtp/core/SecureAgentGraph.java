@@ -177,8 +177,7 @@ public class SecureAgentGraph {
             File secureTempPath = new File(homeDir, ".sag-temp");
 
             if (!secureTempPath.exists()) {
-                boolean created = secureTempPath.mkdirs();
-                if (!created) {
+                if (!secureTempPath.mkdirs()) {
                     throw new IOException("Could not create secure temp directory");
                 }
             }
