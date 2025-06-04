@@ -86,6 +86,7 @@ jobs:
         run: |
           cd sag-docker/Test
           docker compose up -d
+          while [[ true ]]; do curl http://localhost:3031/$/ping && exit 0 || sleep 3; done
 
       - name: Run SAG no-auth-smoke-tests
         run: |
