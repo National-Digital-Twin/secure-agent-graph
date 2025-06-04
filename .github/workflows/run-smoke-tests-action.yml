@@ -83,8 +83,11 @@ jobs:
 
       - name: Start Smoke Test Containers
         run: |
-          docker build -t sag-smoke-test:pipeline .
-          docker run sag-smoke-test:pipeline
+          cd sag-docker/Test
+          docker compose --version
+          docker compose up -d
+          docker ps
+          ./smoke-test-local-auth.sh
 
       - name: Run SAG no-auth-smoke-tests
         run: |
