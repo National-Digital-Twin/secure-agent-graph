@@ -5,6 +5,7 @@ on:
     branches:
 #      - 'main'
       - 'feature/run-smoke-tests-on-deploy'
+      - 'feature/run-smoke-tests-on-deploy-josh'
 
 env:
   AWS_REGION: eu-west-2
