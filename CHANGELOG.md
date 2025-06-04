@@ -23,7 +23,7 @@ This project follows **Semantic Versioning (SemVer)** ([semver.org](https://semv
 - Placeholder for upcoming features and enhancements.
 
 ### Fixed
-- Placeholder for bug fixes and security updates.
+- Configured CI build workflow to run on **main** branch only.
 
 ### Changed
 - Placeholder for changes to existing functionality.
