@@ -7,9 +7,6 @@ on:
       - 'feature/run-smoke-tests-on-deploy'
       - 'feature/run-smoke-tests-on-deploy-josh'
 
-env:
-  HURL_VERSION: 6.1.1
-
 jobs:
   run-sag-smoke-tests:
     runs-on: ubuntu-latest
@@ -17,10 +14,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Download Smoke Test Dependencies
-        run: |
-          sudo apt-add-repository -y ppa:lepapareil/hurl && sudo apt install jq hurl="${{ env.HURL_VERSION }}*"
 
       - name: Start Smoke Test Containers
         run: |

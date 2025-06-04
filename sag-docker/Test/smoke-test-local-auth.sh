@@ -26,34 +26,27 @@ export USER_2_DATA="http://example/person9876"
 export SAG_SERVER=http://localhost:3031
 export USER_1="test+user+admin@ndtp.co.uk"
 export USER_2="test+user@ndtp.co.uk"
-
-wait_for_url_auth () {
-    echo "Testing $1 with auth..."
-    printf 'GET %s\nAuthorization: bearer %s\n\nHTTP 200' "$1" $3 \
-      | hurl --retry "$2";# > /dev/null;
-    return $?
-}
+export AWS_REGION=eu-west-2
+export AWS_ACCESS_KEY_ID=smoke-test
+export AWS_SECRET_ACCESS_KEY=smoke-test
 
 echo "Starting auth test"
-
-#docker compose up -d
 
 echo "Fetch id tokens"
 export ID_TOKEN_1=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_1,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
 export ID_TOKEN_2=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_2,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
 
-echo "Starting secure-agent-graph with authentication"
-echo "Wait for server to be ready"
+echo "Run first test"
+curl \
+  -X POST "${SAG_SERVER}/ds/upload" \
+  -H "Content-type: text/trig" \
+  -H "Authorization: bearer ${ID_TOKEN}"
+  --data-binary hurl/data1.trig
 
-wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
+#hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER \
+#--variable ID_TOKEN_USER_1=$ID_TOKEN_1 \
+#--variable ID_TOKEN_USER_2=$ID_TOKEN_2 \
+#--variable USER_1_DATA=$USER_1_DATA \
+#--variable USER_2_DATA=$USER_2_DATA
 
-hurl hurl/upload-data-auth.hurl  --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1
-
-hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER \
---variable ID_TOKEN_USER_1=$ID_TOKEN_1 \
---variable ID_TOKEN_USER_2=$ID_TOKEN_2 \
---variable USER_1_DATA=$USER_1_DATA \
---variable USER_2_DATA=$USER_2_DATA
-
-docker ps -a
 docker compose logs smoke-test-secure-agent-graph-auth
