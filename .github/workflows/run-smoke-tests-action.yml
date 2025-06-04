@@ -85,6 +85,9 @@ jobs:
         run: |
           cd sag-docker/Test
           docker compose up -d
+          docker ps
+          ./smoke-test-local-auth.sh
+          docker logs smoke-test-secure-agent-graph-auth
 
       - name: Run SAG no-auth-smoke-tests
         run: |
