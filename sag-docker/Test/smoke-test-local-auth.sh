@@ -35,7 +35,7 @@ wait_for_url_auth () {
 
 echo "Starting auth test"
 
-docker compose up -d
+#docker compose up -d
 
 echo "Fetch id tokens"
 ID_TOKEN_1=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_1,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
@@ -48,15 +48,15 @@ wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
 
 curl http://localhost:3030/ds
 
-hurl hurl/upload-data-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 || { docker compose down; exit 1; }
+hurl hurl/upload-data-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 --very-verbose || { docker compose down; exit 1; }
 
-hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER \
+hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER --very-verbose \
 --variable ID_TOKEN_USER_1=$ID_TOKEN_1 \
 --variable ID_TOKEN_USER_2=$ID_TOKEN_2 \
 --variable USER_1_DATA=$USER_1_DATA \
 --variable USER_2_DATA=$USER_2_DATA || { docker compose down; exit 1; }
 
-docker compose down
+#docker compose down
 
 echo "Passed"
 exit 0

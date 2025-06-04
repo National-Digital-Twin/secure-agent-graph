@@ -30,7 +30,7 @@ services:
       - type: bind
         source: ../mnt/config
         target: /fuseki/config
-    command: "--config /fuseki/config/dev-server-graphql.ttl -port 3031"
+    command: "--config /fuseki/config/config-abac-local.ttl -port 3031"
 
   smoke-test-secure-agent-graph-no-auth:
     image: ghcr.io/national-digital-twin/secure-agent-graph:0.90.0

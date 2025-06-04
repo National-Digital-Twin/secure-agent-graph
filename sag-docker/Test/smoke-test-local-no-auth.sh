@@ -37,7 +37,7 @@ USER_2="test+user@ndtp.co.uk"
 
 echo Starting vanilla secure-agent-graph
 
-docker compose up -d
+#docker compose up -d
 
 wait_for_url "$SAG_SERVER/ds" 60
 hurl hurl/upload-data-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER || { docker compose down; exit 1; }
@@ -46,6 +46,6 @@ hurl hurl/sqarql-text-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable 
 
 echo "Passed"
 
-docker compose down
+#docker compose down
 
 exit 0

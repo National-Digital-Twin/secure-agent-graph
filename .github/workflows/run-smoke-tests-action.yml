@@ -81,6 +81,11 @@ jobs:
           sudo apt install hurl="${{ env.HURL_VERSION }}"*
           sudo apt-get install jq
 
+      - name: Start Smoke Test Containers
+        run: |
+          cd sag-docker/Test
+          docker compose up -d
+
       - name: Run SAG no-auth-smoke-tests
         run: |
           cd sag-docker/Test
@@ -90,3 +95,8 @@ jobs:
         run: |
           cd sag-docker/Test
           ./smoke-test-local-auth.sh
+
+      - name: Clean up Containers
+        run: |
+          cd sag-docker/Test
+          docker compose down
