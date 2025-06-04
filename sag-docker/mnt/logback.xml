@@ -45,7 +45,7 @@
 <!--        </encoder>-->
 <!--    </appender>-->
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="OUT"/>
     </root>
 
@@ -72,7 +72,7 @@
     </appender>
 
     <!-- Fuseki requests logged in plain format -->
-    <logger name="org.apache.jena.fuseki.Request" level="DEBUG">
+    <logger name="org.apache.jena.fuseki.Request" level="INFO">
         <appender-ref ref="PLAIN"/>
     </logger>
 
