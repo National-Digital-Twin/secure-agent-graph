@@ -1,4 +1,14 @@
 services:
+  smoke-test-cognito-local:
+    image: jagregory/cognito-local:latest
+    restart: always
+    networks:
+      - smoke-test
+    volumes:
+      - ./cognito-local:/app/.cognito
+    ports:
+      - "9229:9229"
+
   smoke-test-secure-agent-graph-auth:
     image: ghcr.io/national-digital-twin/secure-agent-graph:0.90.0
     depends_on:
