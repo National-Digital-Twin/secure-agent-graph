@@ -44,12 +44,6 @@ export ID_TOKEN_2=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth
 echo "Starting secure-agent-graph with authentication"
 echo "Wait for server to be ready"
 
-
-echo "ID_TOKEN_1 is:"
-echo "$ID_TOKEN_1" | base64 -w0 | base64 -w0
-echo "ID_TOKEN_2 is:"
-echo "$ID_TOKEN_2" | base64 -w0 | base64 -w0
-
 wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
 
 hurl hurl/upload-data-auth.hurl  --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1
