@@ -72,7 +72,7 @@ Unit testing is a software testing method where individual components or modules
 
 To perform unit tests, we use SonarQube. This platform allows us to see coverage (and other useful metrics) inside an easy to use yet powerful web interface hosted locally.
 
-## Starting SonarQube Locally
+### Starting SonarQube Locally
 1. *The following command spins up a docker container for a community edition of SonarQube locally (at time of writing **25.5.0.107428** is the latest version).*
    ```shell
    docker run -p 9000:9000 -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true --name sonarqube sonarqube:25.5.0.107428-community
