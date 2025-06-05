@@ -42,4 +42,12 @@ if [ $? -eq 0 ]; then
   JAVA_OPTIONS="-javaagent:${FUSEKI_DIR}/agents/opentelemetry-javaagent.jar ${JAVA_OPTIONS}"
 fi
 echo "java" $JAVA_OPTIONS -cp "$FUSEKI_CP" $MAIN "$@"
-exec "java" $JAVA_OPTIONS -cp "$FUSEKI_CP" $MAIN "$@"
+
+#pwd
+#ls -l
+#
+#echo "======="
+#
+#ls config -l
+
+exec "java" $JAVA_OPTIONS -cp "$FUSEKI_CP" $MAIN --config config/dev-server-graphql.ttl "$@"

@@ -27,6 +27,7 @@
 
 ARG JAVA_VERSION=21
 
+
 FROM eclipse-temurin:${JAVA_VERSION} AS secure-agent-graph
 
 ARG FUSEKI_DIR=/fuseki
@@ -48,8 +49,9 @@ ARG LIB=${FUSEKI_DIR}/lib
 ARG AGENTS=${FUSEKI_DIR}/agents
 ARG SBOMS=/opt/ianode/sbom
 
-COPY sag-docker/entrypoint.sh .
-COPY sag-docker/logback.xml .
+COPY /entrypoint.sh .
+COPY /logback.xml .
+COPY /mnt/config $CONFIGS
 
 RUN \
     mkdir -p $LOGS $DATA $CONFIGS $LIB $AGENTS $SBOMS && \
@@ -57,15 +59,15 @@ RUN \
     chmod a+x entrypoint.sh
 
 # Build location of the jars we need.
-ARG PROJECT_VERSION
+ARG PROJECT_VERSION=0.90.0
 ARG FUSEKI_JAR
 
 ## Collected jars
-ARG JARS=sag-docker/target/dependency
+ARG JARS=target/dependency
 COPY ${JARS} lib
-ARG AGENTS=sag-docker/target/agents
+ARG AGENTS=target/agents
 COPY ${AGENTS} agents
-ARG SBOM=sag-docker/target/docker-${PROJECT_VERSION}-bom.json
+ARG SBOM=target/docker-${PROJECT_VERSION}-bom.json
 COPY ${SBOM} /opt/ianode/sbom/secure-agent-graph-${PROJECT_VERSION}-bom.json
 
 ## Default environment variables.
