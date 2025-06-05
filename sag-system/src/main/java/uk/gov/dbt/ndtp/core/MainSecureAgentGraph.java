@@ -69,20 +69,26 @@ public class MainSecureAgentGraph {
     }
 
     public static FusekiServer build(String... args) {
-        JenaSystem.init();
-        FusekiLogging.markInitialized(true);
-        LOG.info("Secure Agent Graph: Args: {}", List.of(args));
-        LOG.info("Secure Agent Graph ({})", SecureAgentGraph.VERSION);
-        LOG.info("Apache Jena Fuseki ({})", Fuseki.VERSION);
-        String userAttributeStore = urlUserAttributeStore();
-        if ( userAttributeStore == null )
-            LOG.info("No ENV_USER_ATTRIBUTES_URL setting");
-        else
-            LOG.info("User attribute store: {}", userAttributeStore);
-
-        // SecureAgentGraph.construct does the work of building a configured server.
-        FusekiServer server = SecureAgentGraph.construct(args);
-        return server;
+        System.out.println("NICK - Null pointer build");
+        try {
+            JenaSystem.init();
+            FusekiLogging.markInitialized(true);
+            LOG.info("Secure Agent Graph: Args: {}", List.of(args));
+            LOG.info("Secure Agent Graph ({})", SecureAgentGraph.VERSION);
+            LOG.info("Apache Jena Fuseki ({})", Fuseki.VERSION);
+            String userAttributeStore = urlUserAttributeStore();
+            if ( userAttributeStore == null )
+                LOG.info("No ENV_USER_ATTRIBUTES_URL setting");
+            else
+                LOG.info("User attribute store: {}", userAttributeStore);
+            // SecureAgentGraph.construct does the work of building a configured server.
+            FusekiServer server = SecureAgentGraph.construct(args);
+            return server;
+        } catch (NullPointerException exception) {
+            exception.printStackTrace();
+            System.out.println(String.format("Thrown null pointer exception %s", exception.getMessage()));
+        }
+        return null;
     }
 
     private static String ENV_USER_ATTRIBUTES_URL = "USER_ATTRIBUTES_URL";
