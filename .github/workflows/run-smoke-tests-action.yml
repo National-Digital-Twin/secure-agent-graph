@@ -53,7 +53,7 @@ jobs:
         run: |
           cd sag-docker
           docker build -t nick-sag-test-1 .
-          docker run -e JWKS_URL=http://cognito-local-ndtp:9229/local_6GLuhxhD/.well-known/jwks.json \
+          docker run -d -e JWKS_URL=http://cognito-local-ndtp:9229/local_6GLuhxhD/.well-known/jwks.json \
           --network smoke-test --name nick-sag-smoke-test-build nick-sag-test-1
 
       - name: Test container is working
