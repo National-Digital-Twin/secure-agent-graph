@@ -27,6 +27,7 @@ package uk.gov.dbt.ndtp.core;
 
 import static java.lang.String.format;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.jena.fuseki.Fuseki;
@@ -63,9 +64,17 @@ public class MainSecureAgentGraph {
         }
 
     public static FusekiServer buildAndRun(String... args) {
-        FusekiServer server = build(args);
-        server.start();
-        return server;
+        try {
+            System.out.println("[buildAndRun] Args: " + Arrays.toString(args));
+            FusekiServer server = build(args);
+            server.start();
+            return server;
+        } catch (NullPointerException exception) {
+            exception.printStackTrace();
+            System.out.println("[buildAndRun] Application threw a null pointer exception");
+        }
+
+        return null;
     }
 
     public static FusekiServer build(String... args) {
