@@ -77,10 +77,11 @@ To perform unit tests, we use SonarQube. This platform allows us to see coverage
    ```shell
    docker run -p 9000:9000 -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true --name sonarqube sonarqube:25.5.0.107428-community
    ```
-   
+  > [!NOTE]
   > The **SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true** environment flag. This is to bypass Elasticsearch bootstrap checks as they, are not necessary for a local setup and can sometimes cause issues during setup.
 
 2. Go to your web browser and navigate to http://localhost:9000. This will bring up the login portal for SonarQube. When logging in for the first time use admin for both the username and password. It will ask you to set a new password for which you can choose anything of preference. 
+  > [!NOTE]  
   > If you get an **Unexpected application error**, refresh the page (it seems to be to do with an overlay not rendering properly).
 
 3. Select **Create a local project** and give it a name (this should ideally be the exact same name as the repository).
@@ -93,6 +94,7 @@ To perform unit tests, we use SonarQube. This platform allows us to see coverage
 
 7. On the next page, click **Continue** and then under the **Run analysis on your project** section, select the option that best describes your project.
 
+  > [!NOTE]
   > If your project is a Java project, select Maven. If you are unsure whether or not your project is a Java project that will work with the **Maven** method described here, check your root folder for a file called **pom.xml**. If it exists then this method will work.
 
   > [!WARNING]
