@@ -101,9 +101,9 @@ To perform unit tests, we use SonarQube. This platform allows us to see coverage
 > If you get an error while running this command, then check that your Java version matches the expected Java version of the repository. The error message should inform you which version is expected.
 
 
-   - If your project is a Python project, select Python.
+   - If your project is a **Python** project, select **Python**.
   
-   - If your project is a JavaScript or TypeScript project, select JavaScript/TypeScript.
+   - If your project is a **JavaScript** or **TypeScript** project, select **JavaScript/TypeScript**.
 
 8. On selecting, the option that best describes your project, follow the steps shown to run a SonarQube analysis (the command provided must be run at the root of the project folder). 
 
