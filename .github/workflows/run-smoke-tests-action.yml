@@ -21,30 +21,47 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-#      - name: Set up Cognito Local
-#        run: |
-#          docker run -d --name cognito-local-ndtp \
-#            -v ./sag-docker/Test/cognito-local:/app/.cognito \
-#            -p 9229:9229 \
-#            jagregory/cognito-local:latest
+      - name: Create Docker Network
+        run: |
+          docker network create smoke-test
 
-#      - name: Set up Java
-#        uses: actions/setup-java@v4
-#        with:
-#          java-version: '21'
-#          distribution: 'temurin'
-#          cache: 'maven'
-#          cache-dependency-path: 'pom.xml'
+      - name: Set up Cognito Local
+        run: |
+          docker run -d --name cognito-local-ndtp \
+            -v ./sag-docker/Test/cognito-local:/app/.cognito \
+            -p 9229:9229 \
+            --network smoke-test \
+            jagregory/cognito-local:latest
 
-#      - name: Configure Maven settings
-#        run: |
-#          mkdir -p ~/.m2
-#          echo "<settings><servers><server><id>github</id><username>${{ github.actor }}</username><password>${{ secrets.GH_PACKAGES_PAT }}</password></server></servers></settings>" > ~/.m2/settings.xml
-#
-#      - name: Build secure-agent-graph
-#        run: mvn clean install --batch-mode --no-transfer-progress -Dgpg.skip=true
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+          cache-dependency-path: 'pom.xml'
 
-#      - name: Ping cognito-local
+      - name: Configure Maven settings
+        run: |
+          mkdir -p ~/.m2
+          echo "<settings><servers><server><id>github</id><username>${{ github.actor }}</username><password>${{ secrets.GH_PACKAGES_PAT }}</password></server></servers></settings>" > ~/.m2/settings.xml
+
+      - name: Build secure-agent-graph
+        run: mvn clean install --batch-mode --no-transfer-progress -Dgpg.skip=true
+
+      - name: start sag docker container
+          cd sag-docker
+          docker build -t nick-sag-test-1 .
+          docker run -e JWKS_URL=http://cognito-local-ndtp:9229/local_6GLuhxhD/.well-known/jwks.json \
+          --network smoke-test --name nick-sag-smoke-test-build nick-sag-test-1
+
+      - name: Test container is working
+        run: |
+          sleep 30
+          curl http://localhost:3030/ds || true
+          docker logs nick-sag-smoke-test-build
+
+      #      - name: Ping cognito-local
 #        run: |
 #          curl http://localhost:9229
 
@@ -68,38 +85,38 @@ jobs:
 #          java \
 #          -classpath "sag-server/target/classes:sag-system/target/classes:sag-docker/target/dependency/*" \
 #          uk.gov.dbt.ndtp.secure.agent.graph.SecureAgentGraph \
-#          --config sag-docker/mnt/config/dev-server-graphql.ttl &
+#          --config sag-docker/mnt/config/dev-server-graphql.ttl
 #
 #      - name: (debug) Send data to SAG
 #        run: |
 #          ID_TOKEN=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_1,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
 #          curl -XPOST -T ./sag-docker/Test/data1.trig --header "Content-type: text/trig" -H "Authorization: bearer $ID_TOKEN" http://localhost:3030/ds/upload
 
-      - name: Download Smoke Test Dependencies
-        run: |
-          sudo apt-add-repository -y ppa:lepapareil/hurl 
-          sudo apt install hurl="${{ env.HURL_VERSION }}"*
-          sudo apt-get install jq
+#      - name: Download Smoke Test Dependencies
+#        run: |
+#          sudo apt-add-repository -y ppa:lepapareil/hurl
+#          sudo apt install hurl="${{ env.HURL_VERSION }}"*
+#          sudo apt-get install jq
 
-      - name: Start Smoke Test Containers
-        run: |
-          cd sag-docker/Test
-          docker compose version
-          docker compose up -d
-          docker ps
-          ./smoke-test-local-auth.sh
-
-      - name: Run SAG no-auth-smoke-tests
-        run: |
-          cd sag-docker/Test
-          ./smoke-test-local-no-auth.sh
-
-      - name: Run SAG auth-smoke-tests
-        run: |
-          cd sag-docker/Test
-          ./smoke-test-local-auth.sh
-
-      - name: Clean up Containers
-        run: |
-          cd sag-docker/Test
-          docker compose down
+#      - name: Start Smoke Test Containers
+#        run: |
+#          cd sag-docker/Test
+#          docker compose version
+#          docker compose up -d
+#          docker ps
+#          ./smoke-test-local-auth.sh
+#
+#      - name: Run SAG no-auth-smoke-tests
+#        run: |
+#          cd sag-docker/Test
+#          ./smoke-test-local-no-auth.sh
+#
+#      - name: Run SAG auth-smoke-tests
+#        run: |
+#          cd sag-docker/Test
+#          ./smoke-test-local-auth.sh
+#
+#      - name: Clean up Containers
+#        run: |
+#          cd sag-docker/Test
+#          docker compose down
