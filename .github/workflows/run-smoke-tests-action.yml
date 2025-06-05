@@ -50,6 +50,7 @@ jobs:
         run: mvn clean install --batch-mode --no-transfer-progress -Dgpg.skip=true
 
       - name: start sag docker container
+        run: |
           cd sag-docker
           docker build -t nick-sag-test-1 .
           docker run -e JWKS_URL=http://cognito-local-ndtp:9229/local_6GLuhxhD/.well-known/jwks.json \
