@@ -69,7 +69,6 @@ public class MainSecureAgentGraph {
     }
 
     public static FusekiServer build(String... args) {
-        System.out.println("NICK - Null pointer build");
         try {
             JenaSystem.init();
             FusekiLogging.markInitialized(true);
@@ -83,6 +82,7 @@ public class MainSecureAgentGraph {
                 LOG.info("User attribute store: {}", userAttributeStore);
             // SecureAgentGraph.construct does the work of building a configured server.
             FusekiServer server = SecureAgentGraph.construct(args);
+            System.out.println("NICK - Server created, no null pointer error thrown");
             return server;
         } catch (NullPointerException exception) {
             exception.printStackTrace();
