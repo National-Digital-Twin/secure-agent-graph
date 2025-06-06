@@ -34,7 +34,7 @@ jobs:
           snap list
           docker version
           cd sag-docker/Test
-          docker compose up -d
+          sudo docker compose up -d
           docker ps
           echo "Cognito Logs"
           docker logs test-smoke-test-cognito-local-1
@@ -43,8 +43,6 @@ jobs:
           echo "=== SAG NO AUTH Logs"
           docker logs test-smoke-test-secure-agent-graph-no-auth-1
           ./smoke-test-local-no-auth.sh
-          while [[ true ]]; do
-          docker logs test-smoke-test-secure-agent-graph-auth-1 | grep "Start Fuseki (http=3031" && break; echo "SAG AUTH not up" && sleep 10 && docker ps; done
           echo "SAG AUTH Logs"
           docker logs test-smoke-test-secure-agent-graph-auth-1
           echo "===Auth Test ==="
