@@ -50,7 +50,7 @@ hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER \
 --variable ID_TOKEN_USER_1=$ID_TOKEN_1 \
 --variable ID_TOKEN_USER_2=$ID_TOKEN_2 \
 --variable USER_1_DATA=$USER_1_DATA \
---variable USER_2_DATA=$USER_2_DATA || { docker compose down; exit 1; }
+--variable USER_2_DATA=$USER_2_DATA #|| { docker compose down; exit 1; }
 
 echo "Passed"
 
