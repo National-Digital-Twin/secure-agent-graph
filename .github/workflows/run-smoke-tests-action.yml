@@ -24,6 +24,7 @@ jobs:
       - name: Create Docker Network
         run: |
           docker network create smoke-test
+          docker version
 
       - name: Set up Cognito Local
         run: |
