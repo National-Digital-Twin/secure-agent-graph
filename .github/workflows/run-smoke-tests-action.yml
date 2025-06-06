@@ -38,9 +38,14 @@ jobs:
           docker ps
           echo "Cognito Logs"
           docker logs test-smoke-test-cognito-local-1
-          echo "SAG Logs"
+          echo "SAG AUTH Logs"
           docker logs test-smoke-test-secure-agent-graph-auth-1
+          echo "=== SAG NO AUTH Logs"
+          docker logs test-smoke-test-secure-agent-graph-no-auth-1
           ./smoke-test-local-no-auth.sh
+          sleep 30
+          echo "SAG AUTH Logs"
+          docker logs test-smoke-test-secure-agent-graph-auth-1
           echo "===Auth Test ==="
           ./smoke-test-local-auth.sh
           echo "Cognito Logs"
@@ -54,7 +59,6 @@ jobs:
           docker logs test-smoke-test-cognito-local-1
           echo "SAG Logs"
           docker logs test-smoke-test-secure-agent-graph-auth-1
-          docker compose down
 
 # for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
 # sudo apt-get update
