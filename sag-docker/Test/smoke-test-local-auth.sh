@@ -41,11 +41,13 @@ ID_TOKEN_2=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --clie
 
 echo "ID_TOKEN_1 = $ID_TOKEN_1"
 echo "ID_TOKEN_2 = $ID_TOKEN_2"
-
+echo "wait for auth"
 wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
 
+echo "starting hurl test 1"
 hurl hurl/upload-data-auth.hurl  --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 || { docker compose down; exit 1; }
 
+echo "starting hurl test 2"
 hurl hurl/sparql-auth-admin-user.hurl --variable SAG_SERVER=$SAG_SERVER \
 --variable ID_TOKEN_USER_1=$ID_TOKEN_1 \
 --variable ID_TOKEN_USER_2=$ID_TOKEN_2 \
