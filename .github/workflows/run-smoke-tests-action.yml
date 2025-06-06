@@ -1,0 +1,36 @@
+name: Run Smoke Tests on Deploy
+
+on:
+  push:
+    branches:
+#      - 'main'
+      - 'feature/run-smoke-tests-on-deploy-ro'
+
+env:
+  AWS_REGION: eu-west-2
+  AWS_ACCESS_KEY_ID: smoke-test
+  AWS_SECRET_ACCESS_KEY: smoke-test
+  JWKS_URL: http://localhost:9229/local_6GLuhxhD/.well-known/jwks.json
+  HURL_VERSION: 6.1.1
+
+jobs:
+  run-sag-smoke-tests:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Docker RUN
+        run: |
+          sudo apt-add-repository -y ppa:lepapareil/hurl 
+          sudo apt install hurl="${{ env.HURL_VERSION }}"*
+          sudo apt-get install jq
+          docker version
+          cd sag-docker/Test
+          docker compose up -d
+          docker ps
+          sleep 30
+          ./smoke-test-local-no-auth.sh
+          echo "===Auth Test ==="
+          ./smoke-test-local-auth.sh
