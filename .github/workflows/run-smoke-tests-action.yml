@@ -23,23 +23,23 @@ jobs:
 
       - name: Docker RUN
         run: |
-          for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
-          sudo apt-get update
-          sudo apt-get install ca-certificates curl -y
-          sudo install -m 0755 -d /etc/apt/keyrings
-          sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-          sudo chmod a+r /etc/apt/keyrings/docker.asc
-          echo \
-            "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-            $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
-            sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-          sudo apt-get update
-          sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
-          sudo docker run hello-world
+          # for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+          # sudo apt-get update
+          # sudo apt-get install ca-certificates curl -y
+          # sudo install -m 0755 -d /etc/apt/keyrings
+          # sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+          # sudo chmod a+r /etc/apt/keyrings/docker.asc
+          # echo \
+          #   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+          #   $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+          #   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          # sudo apt-get update
+          # sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+          # sudo docker run hello-world
           sudo apt-add-repository -y ppa:lepapareil/hurl 
           sudo apt install hurl="${{ env.HURL_VERSION }}"*
-          sudo apt-get install jq
-          sudo apt-get upgrade -y
+          sudo apt-get install jq -y
+          # sudo apt-get upgrade -y
           sudo snap install aws-cli --classic 
           export AWS_SECRET_ACCESS_KEY=nothing
           export AWS_ACCESS_KEY_ID=nothing
@@ -50,6 +50,10 @@ jobs:
           cd sag-docker/Test
           docker compose up -d
           docker ps
+          echo "Cognito Logs"
+          docker logs test-smoke-test-cognito-local-1
+          echo "SAG Logs"
+          docker logs test-smoke-test-secure-agent-graph-auth-1
           ./smoke-test-local-no-auth.sh
           echo "===Auth Test ==="
           ./smoke-test-local-auth.sh
