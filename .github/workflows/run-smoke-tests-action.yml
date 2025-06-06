@@ -52,6 +52,7 @@ jobs:
           docker ps
           ./smoke-test-local-no-auth.sh
           echo "===Auth Test ==="
-          curl localhost:3031
-          curl localhost:9229
           ./smoke-test-local-auth.sh
+          docker logs test-smoke-test-cognito-local-1
+          docker logs test-smoke-test-secure-agent-graph-auth-1
+          docker compose down
