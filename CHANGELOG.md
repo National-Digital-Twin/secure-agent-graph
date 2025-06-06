@@ -23,6 +23,7 @@ This project follows **Semantic Versioning (SemVer)** ([semver.org](https://semv
 - Added documentation and docker compose for running smoke tests.
 
 ### Fixed
+- Addressed SonarQube security issue.
 - Addressed sonarqube security blockers.
 
 ### Changed
