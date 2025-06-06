@@ -20,7 +20,7 @@ This project follows **Semantic Versioning (SemVer)** ([semver.org](https://semv
 ## [Unreleased]
 
 ### Added
-- Placeholder for upcoming features and enhancements.
+- Added documentation and docker compose for running smoke tests.
 
 ### Fixed
 - Configured CI build workflow to run on **main** branch only.
