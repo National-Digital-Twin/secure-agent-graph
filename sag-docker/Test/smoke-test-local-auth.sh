@@ -39,6 +39,9 @@ echo "Fetch id tokens"
 ID_TOKEN_1=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_1,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
 ID_TOKEN_2=$(aws --endpoint http://0.0.0.0:9229 cognito-idp initiate-auth --client-id 6967e8jkb0oqcm9brjkrbcrhj --auth-flow USER_PASSWORD_AUTH --auth-parameters USERNAME=$USER_2,PASSWORD=password | jq -r '.AuthenticationResult.IdToken')
 
+echo "ID_TOKEN_1 = $ID_TOKEN_1"
+echo "ID_TOKEN_2 = $ID_TOKEN_2"
+
 wait_for_url_auth "$SAG_SERVER/ds" 60 $ID_TOKEN_1
 
 hurl hurl/upload-data-auth.hurl  --variable SAG_SERVER=$SAG_SERVER --variable ID_TOKEN=$ID_TOKEN_1 || { docker compose down; exit 1; }

@@ -26,6 +26,7 @@ jobs:
           sudo apt-add-repository -y ppa:lepapareil/hurl 
           sudo apt install hurl="${{ env.HURL_VERSION }}"*
           sudo apt-get install jq
+          sudo apt-get upgrade -y
           sudo snap install aws-cli --classic 
           export AWS_SECRET_ACCESS_KEY=nothing
           export AWS_ACCESS_KEY_ID=nothing
