@@ -81,11 +81,3 @@ jobs:
         name: all-targets
         path: '**/target/'
 
-  deploy-to-ghcr:
-    needs: build-maven
-    uses: National-Digital-Twin/aws-integration-testing/.github/workflows/build-tag-push-docker-image-to-ghcr.yml@main
-    with:
-      image_tag: ${{needs.build-maven.outputs.PROJECT_VERSION}}
-      path_to_dockerfile: 'sag-docker'
-      project_version: ${{needs.build-maven.outputs.PROJECT_VERSION}}
-    secrets: inherit
