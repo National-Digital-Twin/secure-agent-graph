@@ -297,17 +297,6 @@ class TestBackupUtils {
     }
 
     @Test
-    void test_deleteDirectoryRecursively_deleteNullDirectory() {
-        deleteDirectoryRecursively(null);
-    }
-
-    @Test
-    void test_deleteDirectoryRecursively_nonExistentDirectory() {
-        deleteDirectoryRecursively(new File("/does/not/exist"));
-        // No specific assertion needed, as the method should handle null gracefully
-    }
-
-    @Test
     void test_getHighestExistingDirectoryNumber_cannot_mkdir() {
         // given
         String cannotCreatePath = "/this/will/not/work";

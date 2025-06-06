@@ -24,6 +24,7 @@ This project follows **Semantic Versioning (SemVer)** ([semver.org](https://semv
 
 ### Fixed
 - Addressed SonarQube security issue.
+- Addressed sonarqube security blockers.
 
 ### Changed
 - Placeholder for changes to existing functionality.
