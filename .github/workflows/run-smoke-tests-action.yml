@@ -27,11 +27,15 @@ jobs:
           sudo apt install hurl="${{ env.HURL_VERSION }}"*
           sudo apt-get install jq
           sudo snap install aws-cli --classic 
+          export AWS_SECRET_ACCESS_KEY=nothing
+          export AWS_ACCESS_KEY_ID=nothing
+          export AWS_REGION=nothing
+          env | grep AWS
+          snap list
           docker version
           cd sag-docker/Test
           docker compose up -d
           docker ps
-          sleep 30
           ./smoke-test-local-no-auth.sh
           echo "===Auth Test ==="
           ./smoke-test-local-auth.sh
