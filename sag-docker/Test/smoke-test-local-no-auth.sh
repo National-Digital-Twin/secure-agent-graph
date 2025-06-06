@@ -42,6 +42,6 @@ hurl hurl/sqarql-text-no-auth.hurl --variable SAG_SERVER=$SAG_SERVER --variable 
 
 echo "Passed"
 
-docker compose down
+#docker compose down
 
 exit 0
