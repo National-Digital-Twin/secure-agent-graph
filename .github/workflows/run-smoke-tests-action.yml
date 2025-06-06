@@ -44,7 +44,7 @@ jobs:
           docker logs test-smoke-test-secure-agent-graph-no-auth-1
           ./smoke-test-local-no-auth.sh
           while [[ true ]]; do
-          docker logs test-smoke-secure-agent-graph-auth-1 | grep "Start Fuseki (http=3031" && break; echo "SAG AUTH not up" && sleep 10 && docker ps; done
+          docker logs test-smoke-test-secure-agent-graph-auth-1 | grep "Start Fuseki (http=3031" && break; echo "SAG AUTH not up" && sleep 10 && docker ps; done
           echo "SAG AUTH Logs"
           docker logs test-smoke-test-secure-agent-graph-auth-1
           echo "===Auth Test ==="
