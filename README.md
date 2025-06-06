@@ -43,7 +43,10 @@ mvn clean install --version
 ### 3. Full Installation  
 Refer to [INSTALLATION.md](INSTALLATION.md) for detailed installation steps, including required dependencies and setup configurations.  
 
-### 4. Uninstallation  
+### 4. Testing
+For information on testing `secure-agent-graph` by running its smoke tests, see: [TESTING.md](/sag-docker/TESTING.md)
+
+### 5. Uninstallation  
 For steps to remove this repository and its dependencies, see [UNINSTALL.md](UNINSTALL.md).  
 
 ## Features  
