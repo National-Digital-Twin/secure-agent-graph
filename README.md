@@ -65,6 +65,11 @@ For steps to remove this repository and its dependencies, see [UNINSTALL.md](UNI
     - Designed with a plugin-based architecture for extensibility.
     - Configurable using Fuseki configuration files and environment variables.
 
+## Testing Guide
+
+### Running Unit Tests
+Navigate to the root of the project and run `mvn test` to run the tests for the repository.
+
 ## API Documentation  
 Documentation detailing the relevant configuration and endpoints is provided [here](docs/configuration-secure-agent-graph.md ). 
 
