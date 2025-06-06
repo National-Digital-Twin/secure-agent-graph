@@ -26,6 +26,7 @@ jobs:
           sudo apt-add-repository -y ppa:lepapareil/hurl 
           sudo apt install hurl="${{ env.HURL_VERSION }}"*
           sudo apt-get install jq
+          sudo snap install aws-cli --classic 
           docker version
           cd sag-docker/Test
           docker compose up -d
