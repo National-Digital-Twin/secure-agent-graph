@@ -10,7 +10,7 @@ services:
       - "9229:9229"
 
   smoke-test-secure-agent-graph-auth:
-    image: ghcr.io/national-digital-twin/secure-agent-graph:0.90.0
+    image: ghcr.io/national-node-net/secure-agent-graph:0.90.0
     depends_on:
       - smoke-test-cognito-local
     ports:
@@ -34,7 +34,7 @@ services:
     command: "--config /fuseki/config/dev-server-graphql.ttl -port 3031"
 
   smoke-test-secure-agent-graph-no-auth:
-    image: ghcr.io/national-digital-twin/secure-agent-graph:0.90.0
+    image: ghcr.io/national-node-net/secure-agent-graph:0.90.0
     ports:
       - "3030:3030"
     environment:

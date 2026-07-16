@@ -26,4 +26,4 @@ services:
       - graph
     environment:
       - FUSEKI_CONFIG=secure-agent-graph-config.ttl
-    image: ghcr.io/national-digital-twin/secure-agent-graph:0.90.0
+    image: ghcr.io/national-node-net/secure-agent-graph:0.90.0

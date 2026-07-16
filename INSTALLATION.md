@@ -7,7 +7,7 @@
 Secure Agent Graph (SAG) provides [SPARQL](https://www.w3.org/TR/sparql-overview/) access using the [SPARQL
 protocol](https://www.w3.org/TR/sparql-protocol/) and [SPARQL Graph Store
 Protocol](https://www.w3.org/TR/sparql-graph-store-protocol/) to RDF data with [ABAC data
-security](https://github.com/National-Digital-Twin/rdf-abac/blob/main/docs/abac.md).
+security](https://github.com/National-Node-Net/rdf-abac/blob/main/docs/abac.md).
 
 ## Starting installation
 1. Run:
@@ -61,7 +61,7 @@ You can find further example configurations later under [Try It Out](#try-it-out
 The following environment variables can be used to control Secure Agent Graph:
 
 ### `USER_ATTRIBUTES_URL`
-This is the network location of [user attribute server](https://github.com/National-Digital-Twin/ianode-access) which also
+This is the network location of [user attribute server](https://github.com/National-Node-Net/ianode-access) which also
 includes the hierarchies management.
 
 The URL value is a template including `{user}`. Example: `http://some-host/users/lookup/{user}`
