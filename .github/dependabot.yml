@@ -24,8 +24,8 @@ updates:
       interval: "weekly"
       day: "sunday"
       time: "16:00"
-      commit-message:
-        prefix: "chore(deps)"
+    commit-message:
+      prefix: "chore(deps)"
     target-branch: develop
     groups:
       sorbet:
