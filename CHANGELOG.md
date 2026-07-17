@@ -17,7 +17,7 @@ This project follows **Semantic Versioning (SemVer)** ([semver.org](https://semv
 
 ---
 
-## [Unreleased]
+## 0.90.1 – 2026-07-16
 
 ### Added
 - Added documentation and docker compose for running smoke tests.
@@ -27,6 +27,7 @@ This project follows **Semantic Versioning (SemVer)** ([semver.org](https://semv
 - Addressed sonarqube security blockers.
 
 ### Changed
+- Alignment of GitHub actions to new organisation.
 - Placeholder for changes to existing functionality.
 
 ---
@@ -46,17 +47,6 @@ Since this release is **pre-1.0.0**, changes may still occur that are **not full
 #### Known Limitations
 - Some components are subject to change before `1.0.0`.
 - APIs may evolve based on partner feedback and internal testing.
-
----
-
-## [0.90.1] – YYYY-MM-DD
-
-### Fixed
-- Security patch addressing [issue].
-- Minor bug fix in [module].
-
----
-
 ## [0.91.0] – YYYY-MM-DD
 
 ### Added

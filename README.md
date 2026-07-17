@@ -10,7 +10,7 @@ This repository contributes to the development of **secure, scalable, and intero
 
 This repository is one of several open-source components that underpin NDTP’s **Integration Architecture (IA)**—a framework designed to allow organisations to manage and exchange data securely while maintaining control over their own information. The IA is actively deployed and tested across multiple sectors, ensuring its adaptability and alignment with real-world needs. 
 
-For a complete overview of the Integration Architecture (IA) project, please see the [Integration Architecture Documentation](https://github.com/National-Digital-Twin/integration-architecture-documentation).
+For a complete overview of the Integration Architecture (IA) project, please see the [Integration Architecture Documentation](https://github.com/National-Node-Net/integration-architecture-documentation).
 
 ## Prerequisites  
 Before using this repository, ensure you have the following dependencies installed:  
@@ -31,7 +31,7 @@ Follow these steps to get started quickly with this repository. For detailed ins
 
 ### 1. Download and Build  
 ```sh  
-git clone https://github.com/National-Digital-Twin/secure-agent-graph.git
+git clone https://github.com/National-Node-Net/secure-agent-graph.git
 cd [secure-agent-graph]  
 ```
 ### 2. Run Build Version  
@@ -52,12 +52,12 @@ For steps to remove this repository and its dependencies, see [UNINSTALL.md](UNI
 ## Features  
 - **Key functionality** 
     - Supports secure and RDF (Resource Description Framework) data-sharing.
-    - Implements [ABAC (Attribute-Based Access Control)](https://github.com/National-Digital-Twin/rdf-abac/blob/main/docs/abac.md) data security.
+    - Implements [ABAC (Attribute-Based Access Control)](https://github.com/National-Node-Net/rdf-abac/blob/main/docs/abac.md) data security.
 - **Key integrations** 
     - Provides SPARQL access using the SPARQL protocol and SPARQL Graph Store Protocol.
     - Integrates with Apache Jena Fuseki server.
     - Includes Fuseki-Kafka bridge for Kafka integration.
-    - Offers [GraphQL]((https://github.com/National-Digital-Twin/graphql-jena/blob/main/docs/index.md)) API interfaces.
+    - Offers [GraphQL]((https://github.com/National-Node-Net/graphql-jena/blob/main/docs/index.md)) API interfaces.
 - **Scalability & performance** 
     - Optimised for high-throughput environments.
     - Supports in-memory datasets for fast data access.
