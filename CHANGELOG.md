@@ -28,7 +28,6 @@ This project follows **Semantic Versioning (SemVer)** ([semver.org](https://semv
 
 ### Changed
 - Alignment of GitHub actions to new organisation.
-- Placeholder for changes to existing functionality.
 
 ---
 
