@@ -32,6 +32,19 @@ This project follows **Semantic Versioning (SemVer)** ([semver.org](https://semv
 
 ---
 
+## [Unreleased] 16-05-2025
+
+### Added
+- n/a
+
+### Fixed
+- n/a
+
+### Changed
+- Updated MAINTAINERS.md with updated supplier information.
+
+---
+
 ## 0.90.0 – 2025-03-31
 
 ### Initial Public Release (Pre-Stable)
