@@ -55,6 +55,62 @@ This assumes you have the pre-requisite Kafka instance up and running.
    ./docker-run.sh --config config/config-replay-abac.ttl
 ```
 
+## Smoke Testing
+
+This section covers running the `smoke-test-local.sh` script in `secure-agent-graph`.
+
+1. Smoke tests are located in `sag-docker/Test`, change directory into this from the `secure-agent-graph` base directory:
+   ```shell
+   cd sag-docker/Test
+   ```
+
+2. These smoke tests require the [hurl](https://hurl.dev/) library for request assertions and [jq]() for json processing.
+   Which can be downloaded with the following commands:
+   ```shell
+   brew install hurl
+   ```
+   &
+   ```shell
+   brew install jq
+   ```
+
+3. Start the smoke test containers by using the following command:
+   ```shell
+   docker compose up -d
+   ```
+
+4. Start the authentication smoke test using:
+   ```shell
+   ./smoke-test-local-auth.sh
+   ```
+
+5. Start the no authentication smoke test using:
+   ```shell
+   ./smoke-test-local-no-auth.sh
+   ```
+
+6. Ensure the smoke tests have passed by seeing a `Passed` message printed in terminal and `secure-agent-graph` response:
+   ```plaintext
+   ... Rest of Response ...
+      }
+   }
+   -----------------------------------------------------------------------------------------------------------------------------------
+   | s                           | p                                                 | o                                             |
+   ===================================================================================================================================
+   | <http://example/person9876> | <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> | <http://ies.data.gov.uk/ontology/ies4#Person> |
+   | <http://example/person9876> | <http://www.w3.org/2000/01/rdf-schema#label>      | "Smith"                                       |
+   | <http://example/person9876> | <http://example/empId>                            | 9876                                          |
+   | <http://example/person9876> | <http://example/phone>                            | "0777 11 11 11"                               |
+   | <http://example/person9876> | <http://example/phone>                            | "0777 22 22 22"                               |
+   | <http://example/person4321> | <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> | <http://ies.data.gov.uk/ontology/ies4#Person> |
+   | <http://example/person4321> | <http://www.w3.org/2000/01/rdf-schema#label>      | "Jones"                                       |
+   | <http://example/person4321> | <http://example/empId>                            | 4321                                          |
+   | <http://example/person4321> | <http://example/phone>                            | "0400 111 222"                                |
+   | <http://example/person4321> | <http://example/phone>                            | "0400 111 333"                                |
+   -----------------------------------------------------------------------------------------------------------------------------------
+   Passed
+   ```
+
 ## Caveats
 
 ### Authentication

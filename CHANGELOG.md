@@ -16,15 +16,18 @@ This project follows **Semantic Versioning (SemVer)** ([semver.org](https://semv
 - **Build metadata** – If needed, use `+build` (e.g., `2.1.0+20250314`).
 
 ---
-## [Unreleased]
+
+## 0.90.1 – 2026-07-16
 
 ### Added
-- Placeholder for upcoming features and enhancements.
+- Added documentation and docker compose for running smoke tests.
 
 ### Fixed
-- Placeholder for bug fixes and security updates.
+- Addressed SonarQube security issue.
+- Addressed sonarqube security blockers.
 
 ### Changed
+- Alignment of GitHub actions to new organisation.
 - Placeholder for changes to existing functionality.
 
 ---
@@ -57,17 +60,6 @@ Since this release is **pre-1.0.0**, changes may still occur that are **not full
 #### Known Limitations
 - Some components are subject to change before `1.0.0`.
 - APIs may evolve based on partner feedback and internal testing.
-
----
-
-## [0.90.1] – YYYY-MM-DD
-
-### Fixed
-- Security patch addressing [issue].
-- Minor bug fix in [module].
-
----
-
 ## [0.91.0] – YYYY-MM-DD
 
 ### Added

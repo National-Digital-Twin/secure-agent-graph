@@ -172,7 +172,17 @@ public class SecureAgentGraph {
             ConfigStruct configStruct = ycp.runYAMLParser(configPath);
             Model configModel = rcg.createRDFModel(configStruct);
 
-            File rdfConfigPath = File.createTempFile("generated-config-", ".ttl");
+            // Create a secure temp directory and pass it to the temp file
+            String homeDir = System.getProperty("user.home");
+            File secureTempPath = new File(homeDir, ".sag-temp");
+
+            if (!secureTempPath.exists()) {
+                if (!secureTempPath.mkdirs()) {
+                    throw new IOException("Could not create secure temp directory");
+                }
+            }
+
+            File rdfConfigPath = File.createTempFile( "generated-config-", ".ttl", secureTempPath);
             rdfConfigPath.deleteOnExit();
 
             try (FileOutputStream out = new FileOutputStream(rdfConfigPath)) {

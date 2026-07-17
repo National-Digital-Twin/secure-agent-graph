@@ -82,7 +82,7 @@ jobs:
 
   build-tag-push:
     needs: build-maven
-    uses: National-Digital-Twin/aws-integration-testing/.github/workflows/build-tag-push-docker-image-to-ecr.yml@main
+    uses: National-Node-Net/aws-integration-testing/.github/workflows/build-tag-push-docker-image-to-ecr.yml@main
     with:
         image_tag: ${{needs.build-maven.outputs.PROJECT_VERSION}}-${{github.sha}}
         container_repo: 'secure-agent-graph'
@@ -92,14 +92,14 @@ jobs:
 
   copy-config-files:
     needs: build-maven
-    uses: National-Digital-Twin/aws-integration-testing/.github/workflows/copy-files-to-ec2-instance.yml@main
+    uses: National-Node-Net/aws-integration-testing/.github/workflows/copy-files-to-ec2-instance.yml@main
     with:
       directory_name: 'sag-docker/mnt'
     secrets: inherit
 
   docker-compose-up:
     needs: [copy-config-files, build-tag-push]
-    uses: National-Digital-Twin/aws-integration-testing/.github/workflows/docker-compose-up.yml@main
+    uses: National-Node-Net/aws-integration-testing/.github/workflows/docker-compose-up.yml@main
     with:
       docker-compose-file-name: 'docker-compose-github.yaml'
     secrets: inherit

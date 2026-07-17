@@ -7,8 +7,8 @@ Secure Agent Graph is an
 [Apache Jena Fuseki server](https://jena.apache.org/documentation/fuseki2/)
 with additional features:
 
-* [ABAC datasets](https://github.com/National-Digital-Twin/rdf-abac/blob/main/docs/abac.md)
-* [GraphQL](https://github.com/National-Digital-Twin/graphql-jena/blob/main/docs/index.md)
+* [ABAC datasets](https://github.com/National-Node-Net/rdf-abac/blob/main/docs/abac.md)
+* [GraphQL](https://github.com/National-Node-Net/graphql-jena/blob/main/docs/index.md)
 * [OpenTelemetry](./opentelemetry.md) support
 
 Secure Agent Graph is configured using a [Fuseki configuration

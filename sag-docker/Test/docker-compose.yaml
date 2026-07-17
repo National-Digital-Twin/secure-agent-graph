@@ -1,0 +1,58 @@
+services:
+  smoke-test-cognito-local:
+    image: jagregory/cognito-local:latest
+    restart: always
+    networks:
+      - smoke-test
+    volumes:
+      - ./cognito-local:/app/.cognito
+    ports:
+      - "9229:9229"
+
+  smoke-test-secure-agent-graph-auth:
+    image: ghcr.io/national-node-net/secure-agent-graph:0.90.0
+    depends_on:
+      - smoke-test-cognito-local
+    ports:
+      - "3031:3031"
+    environment:
+      JAVA_OPTIONS: -Xmx2048m -Xms2048m
+      JWKS_URL: http://smoke-test-cognito-local:9229/local_6GLuhxhD/.well-known/jwks.json
+      USER_ATTRIBUTES_URL: http://localhost:8091
+    networks:
+      - smoke-test
+    volumes:
+      - type: bind
+        source: ../mnt/logs
+        target: /fuseki/logs
+      - type: bind
+        source: ../mnt/databases
+        target: /fuseki/databases
+      - type: bind
+        source: ../mnt/config
+        target: /fuseki/config
+    command: "--config /fuseki/config/dev-server-graphql.ttl -port 3031"
+
+  smoke-test-secure-agent-graph-no-auth:
+    image: ghcr.io/national-node-net/secure-agent-graph:0.90.0
+    ports:
+      - "3030:3030"
+    environment:
+      JAVA_OPTIONS: -Xmx2048m -Xms2048m
+      JWKS_URL: disabled
+    volumes:
+      - type: bind
+        source: ../mnt/logs
+        target: /fuseki/logs
+      - type: bind
+        source: ../mnt/databases
+        target: /fuseki/databases
+      - type: bind
+        source: ../mnt/config
+        target: /fuseki/config
+    command: "--config /fuseki/config/dev-server-vanilla.ttl -port 3030"
+
+networks:
+  smoke-test:
+    name: smoke-test
+    driver: bridge

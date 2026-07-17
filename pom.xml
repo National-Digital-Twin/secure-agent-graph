@@ -34,12 +34,12 @@
 
   <name>IANode Secure Agent Graph - Parent</name>
   <description>IANode Secure Agent Graph</description>
-  <url>https://github.com/National-Digital-Twin/secure-agent-graph</url>
+  <url>https://github.com/National-Node-Net/secure-agent-graph</url>
 
   <scm>
-    <connection>scm:git:git@github.com:National-Digital-Twin/secure-agent-graph</connection>
-    <developerConnection>scm:git:git@github.com:National-Digital-Twin/secure-agent-graph</developerConnection>
-    <url>https://github.com/National-Digital-Twin/secure-agent-graph</url>
+    <connection>scm:git:git@github.com:National-Node-Net/secure-agent-graph</connection>
+    <developerConnection>scm:git:git@github.com:National-Node-Net/secure-agent-graph</developerConnection>
+    <url>https://github.com/National-Node-Net/secure-agent-graph</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -387,7 +387,7 @@
           <version>${plugin.deploy}</version>
           <configuration>
             <repositoryId>github</repositoryId>
-            <url>https://maven.pkg.github.com/National-Digital-Twin/secure-agent-graph</url>
+            <url>https://maven.pkg.github.com/National-Node-Net/secure-agent-graph</url>
           </configuration>
         </plugin>
 
@@ -562,7 +562,7 @@
   <repositories>
     <repository>
       <id>github</id>
-      <url>https://maven.pkg.github.com/National-Digital-Twin/*</url>
+      <url>https://maven.pkg.github.com/National-Node-Net/*</url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -575,12 +575,12 @@
     <snapshotRepository>
       <id>github</id>
       <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/National-Digital-Twin/secure-agent-graph</url>
+      <url>https://maven.pkg.github.com/National-Node-Net/secure-agent-graph</url>
     </snapshotRepository>
     <repository>
       <id>github</id>
       <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/National-Digital-Twin/secure-agent-graph</url>
+      <url>https://maven.pkg.github.com/National-Node-Net/secure-agent-graph</url>
     </repository>
   </distributionManagement>
 
